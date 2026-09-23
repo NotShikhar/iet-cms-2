@@ -1,36 +1,29 @@
-import { accreditations, stats } from '../../data/content'
-import { Counter } from '../ui/Counter'
-import { Reveal, Stagger, StaggerItem } from '../ui/Reveal'
+import { BadgeCheck } from 'lucide-react'
+import { accreditations } from '../../data/content'
+import { Stagger, StaggerItem } from '../ui/Reveal'
 
 export function Stats() {
   return (
-    <section className="py-16 lg:py-20">
+    <section className="py-14 lg:py-16">
       <div className="container-x">
-        <Stagger className="grid grid-cols-2 gap-px overflow-hidden rounded-3xl border border-line bg-line md:grid-cols-3 lg:grid-cols-6">
-          {stats.map((s) => (
-            <StaggerItem key={s.label} className="bg-white p-6 text-center transition hover:bg-mist">
-              <div className="font-display text-3xl font-extrabold tracking-tight text-navy-700 sm:text-4xl">
-                <Counter value={s.value} suffix={s.suffix} />
+        <p className="text-center text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
+          Approvals &amp; accreditation
+        </p>
+        <Stagger className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {accreditations.map((a) => (
+            <StaggerItem key={a.name}>
+              <div className="flex h-full items-start gap-3 rounded-2xl border border-line bg-white p-4 transition hover:border-navy-200 hover:shadow-soft">
+                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-navy-50 text-navy-600">
+                  <BadgeCheck className="h-4.5 w-4.5" />
+                </span>
+                <div className="min-w-0">
+                  <p className="font-display text-sm font-bold text-ink">{a.name}</p>
+                  <p className="mt-0.5 text-xs leading-relaxed text-slate-500">{a.detail}</p>
+                </div>
               </div>
-              <p className="mt-1.5 text-xs font-medium text-slate-500 sm:text-sm">{s.label}</p>
             </StaggerItem>
           ))}
         </Stagger>
-
-        <Reveal className="mt-8">
-          <div className="fade-mask-x overflow-hidden">
-            <div className="animate-marquee flex w-max gap-4">
-              {[...accreditations, ...accreditations].map((a, i) => (
-                <div key={i} className="chip !gap-2 !px-4 !py-2">
-                  <span className="h-2 w-2 rounded-full bg-saffron-400" />
-                  <span className="font-semibold">{a.name}</span>
-                  <span className="text-slate-400">·</span>
-                  <span className="text-slate-500">{a.detail}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </Reveal>
       </div>
     </section>
   )

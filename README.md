@@ -41,6 +41,24 @@ A scrolling notice ticker sits above the hero, and a "Campus in pictures" grid o
 
 Slideshow and gallery images are web-sized WebP copies in `public/media/hero/` (2 MB total, down from 9.6 MB of originals); the full-resolution originals remain in `public/media/ietnew/` and `public/media/times/`. Hero frames are generated at 1800x900 with `withoutEnlargement`, so no photograph is ever upscaled — the two low-resolution campus shots (A-Block, M-Block) are used only in the gallery, where they are shown small and stay sharp.
 
+## Recruiter wall
+
+The placement section on the home page and the Placements page both render `RecruiterWall` — two rows of company tiles scrolling continuously in opposite directions (52s per loop, edge-faded, stopped for `prefers-reduced-motion`). Each tile carries its own right margin rather than flex `gap`, so translating -50% lands exactly one copy along and the loop has no visible jump.
+
+**Logos.** 21 of the 24 recruiters ship a real logo in `public/media/recruiters/` (580 kB total).
+They were taken from the company's Wikipedia article infobox where one exists, otherwise from the
+company's own website, then trimmed and normalised to a 600x176 transparent PNG so every tile
+renders at a consistent 164x48.
+
+ZS Associates, CoreEL and Appalto Electronics publish no usable logo file — no Wikipedia article,
+ZS renders its mark as inline SVG, the CoreEL site returns HTTP 500, and Appalto ships only a white
+knockout that would be invisible on a white tile — so those three fall back to a wordmark tile.
+
+To change or add one, drop a file in `public/media/recruiters/` and set the `logo` field on that
+company in `recruiters` (`src/data/content.ts`). Company logos are trademarks of their owners;
+naming recruiters on a placement page is ordinary practice, but the institute should confirm it is
+content to reproduce the marks.
+
 ## CMS layer
 
 - `src/cms/types.ts` – content model (settings, notices, events, news, pages, documents, media, videos)

@@ -122,3 +122,11 @@ body {
 .cms-prose tbody tr:last-child td { @apply border-b-0; }
 .cms-prose tbody tr:hover { @apply bg-mist; }
 .cms-prose img { @apply my-4 rounded-xl border border-line; }
+
+/* Continuous logo wall — two tracks, opposite directions, never pauses */
+@keyframes marquee-reverse { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+.marquee-track { animation: marquee 52s linear infinite; }
+.marquee-track-reverse { animation: marquee-reverse 52s linear infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track, .marquee-track-reverse { animation: none; }
+}

@@ -1,11 +1,38 @@
 // Figures and lists reproduced from the IET-DAVV Institute Profile (IET_Profile.pdf), the Admission Guidelines 2026-27 and IET Times.
 
-export const recruiters = [
-  'Infosys', 'Capgemini', 'Cognizant', 'LTIMindtree', 'Accenture',
-  'Barclays', 'ZS Associates', 'Dice', 'Groww', 'Quantiphi', 'Mu Sigma',
-  'Volvo Eicher', 'Jindal SAW', 'Tata Electronics', 'Crompton Greaves', 'Torrent Power', 'JK Cement', 'Force Motors',
-  'Medibuddy', 'Beghou Consulting', 'Intellicus', 'CarWale', 'CoreEL', 'Appalto Electronics',
+// Recruiters named in the IET-DAVV Institute Profile.
+// `logo` points at a file in public/media/recruiters/ when the institute supplies one;
+// until then the wall renders the company name as a wordmark tile.
+export type Recruiter = { name: string; group: string; logo?: string }
+
+export const recruiters: Recruiter[] = [
+  { name: 'Infosys', group: 'Top Tech & IT', logo: '/media/recruiters/infosys.png' },
+  { name: 'Capgemini', group: 'Top Tech & IT', logo: '/media/recruiters/capgemini.png' },
+  { name: 'Cognizant', group: 'Top Tech & IT', logo: '/media/recruiters/cognizant.png' },
+  { name: 'LTIMindtree', group: 'Top Tech & IT', logo: '/media/recruiters/ltimindtree.png' },
+  { name: 'Accenture', group: 'Top Tech & IT', logo: '/media/recruiters/accenture.png' },
+  { name: 'Barclays', group: 'Product & Analytics', logo: '/media/recruiters/barclays.png' },
+  { name: 'ZS Associates', group: 'Product & Analytics' },
+  { name: 'Dice', group: 'Product & Analytics', logo: '/media/recruiters/dice.png' },
+  { name: 'Groww', group: 'Product & Analytics', logo: '/media/recruiters/groww.png' },
+  { name: 'Quantiphi', group: 'Product & Analytics', logo: '/media/recruiters/quantiphi.png' },
+  { name: 'Mu Sigma', group: 'Product & Analytics', logo: '/media/recruiters/mu-sigma.png' },
+  { name: 'Volvo Eicher', group: 'Core Engineering & Manufacturing', logo: '/media/recruiters/volvo-eicher.png' },
+  { name: 'Jindal SAW', group: 'Core Engineering & Manufacturing', logo: '/media/recruiters/jindal-saw.png' },
+  { name: 'Tata Electronics', group: 'Core Engineering & Manufacturing', logo: '/media/recruiters/tata-electronics.png' },
+  { name: 'Crompton Greaves', group: 'Core Engineering & Manufacturing', logo: '/media/recruiters/crompton-greaves.png' },
+  { name: 'Torrent Power', group: 'Core Engineering & Manufacturing', logo: '/media/recruiters/torrent-power.png' },
+  { name: 'JK Cement', group: 'Core Engineering & Manufacturing', logo: '/media/recruiters/jk-cement.png' },
+  { name: 'Force Motors', group: 'Core Engineering & Manufacturing', logo: '/media/recruiters/force-motors.png' },
+  { name: 'Medibuddy', group: 'Other Notable Recruiters', logo: '/media/recruiters/medibuddy.png' },
+  { name: 'Beghou Consulting', group: 'Other Notable Recruiters', logo: '/media/recruiters/beghou-consulting.png' },
+  { name: 'Intellicus', group: 'Other Notable Recruiters', logo: '/media/recruiters/intellicus.png' },
+  { name: 'CarWale', group: 'Other Notable Recruiters', logo: '/media/recruiters/carwale.png' },
+  { name: 'CoreEL', group: 'Other Notable Recruiters' },
+  { name: 'Appalto Electronics', group: 'Other Notable Recruiters' },
 ]
+
+export const recruiterNames = recruiters.map((r) => r.name)
 
 export const recruiterGroups = [
   { title: 'Top Tech & IT', items: ['Infosys', 'Capgemini', 'Cognizant', 'LTIMindtree', 'Accenture'] },

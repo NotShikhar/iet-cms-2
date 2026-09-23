@@ -1,7 +1,8 @@
 import { motion } from 'framer-motion'
 import { ArrowRight, Briefcase } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import { placementRate, placementStats, placementYears, recruiters } from '../../data/content'
+import { placementRate, placementStats, placementYears } from '../../data/content'
+import { RecruiterWall } from './RecruiterWall'
 import { Counter } from '../ui/Counter'
 import { Reveal } from '../ui/Reveal'
 import { SectionHeader } from '../ui/SectionHeader'
@@ -65,19 +66,20 @@ export function Placements() {
                   </div>
                 ))}
               </div>
-              <div className="mt-5">
-                <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-slate-500">Major recruiters</p>
-                <div className="fade-mask-x overflow-hidden">
-                  <div className="animate-marquee flex w-max gap-2">
-                    {[...recruiters, ...recruiters].map((r, i) => (
-                      <span key={i} className="rounded-lg border border-line bg-mist px-3 py-1.5 text-xs font-semibold text-slate-700">{r}</span>
-                    ))}
-                  </div>
-                </div>
-              </div>
             </div>
           </Reveal>
         </div>
+
+        <Reveal className="mt-16">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <span className="eyebrow">Recruiters</span>
+              <h3 className="font-display mt-2 text-2xl font-bold text-ink">Companies that hire from IET</h3>
+            </div>
+            <p className="text-sm text-slate-500">As named in the IET-DAVV Institute Profile</p>
+          </div>
+        </Reveal>
+        <RecruiterWall className="mt-8" />
       </div>
     </section>
   )

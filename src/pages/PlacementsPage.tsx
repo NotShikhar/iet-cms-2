@@ -2,6 +2,7 @@ import { motion } from 'framer-motion'
 import { FileText } from 'lucide-react'
 import { useCms } from '../cms/store'
 import { placementRate, placementStats, placementYears, recruiterGroups } from '../data/content'
+import { RecruiterWall } from '../components/home/RecruiterWall'
 import { Counter } from '../components/ui/Counter'
 import { PageHero } from '../components/ui/PageHero'
 import { Reveal, Stagger, StaggerItem } from '../components/ui/Reveal'
@@ -77,16 +78,10 @@ export default function PlacementsPage() {
       <section className="bg-mist py-16">
         <div className="container-x">
           <SectionHeader align="center" eyebrow="Major Recruiters" title="Companies that hire from IET." description="As listed in the IET-DAVV Institute Profile." />
-          <Stagger className="mt-10 grid gap-5 md:grid-cols-2">
-            {recruiterGroups.map((g) => (
-              <StaggerItem key={g.title}>
-                <div className="card h-full p-6">
-                  <p className="text-xs font-semibold uppercase tracking-wider text-navy-600">{g.title}</p>
-                  <div className="mt-3 flex flex-wrap gap-2">{g.items.map((r) => <span key={r} className="rounded-lg border border-line bg-mist px-3 py-1.5 text-sm font-semibold text-slate-700">{r}</span>)}</div>
-                </div>
-              </StaggerItem>
-            ))}
-          </Stagger>
+          <RecruiterWall className="mt-10" />
+          <p className="mt-8 text-center text-sm text-slate-500">
+            {recruiterGroups.map((g) => g.title).join(' · ')}
+          </p>
         </div>
       </section>
 

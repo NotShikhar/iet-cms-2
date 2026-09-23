@@ -16,7 +16,7 @@ const tones: Record<string, string> = {
 
 export function QuickLinks() {
   return (
-    <section className="relative z-10 mt-6 sm:mt-10">
+    <section className="relative z-20 -mt-10 sm:-mt-14">
       <div className="container-x">
         <Stagger className="grid grid-cols-2 gap-3 rounded-3xl border border-line bg-white p-3 shadow-lift sm:grid-cols-4 lg:grid-cols-8">
           {quickLinks.map((q) => (

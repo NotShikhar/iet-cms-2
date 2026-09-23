@@ -1,11 +1,18 @@
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
-import { ArrowRight, Award, Building2, MapPin, PlayCircle } from 'lucide-react'
+import { ArrowRight, PlayCircle } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useCms } from '../../cms/store'
 import { heroSlides } from '../../data/content'
 
 const INTERVAL = 3000
+
+const figures = [
+  { value: '9', label: 'B.Tech programmes' },
+  { value: '2,500+', label: 'Students on campus' },
+  { value: '428', label: 'Placement offers 2025-26' },
+  { value: '₹64 L', label: 'Highest package' },
+]
 
 export function HeroSlider() {
   const { content } = useCms()
@@ -14,95 +21,127 @@ export function HeroSlider() {
   const [index, setIndex] = useState(0)
   const count = heroSlides.length
 
-  // Rotate on its own. Visitors who ask for reduced motion keep a single still photograph.
   useEffect(() => {
     if (reduce) return
     const id = setTimeout(() => setIndex((i) => (i + 1) % count), INTERVAL)
     return () => clearTimeout(id)
   }, [index, count, reduce])
 
-  // Keep the next photograph warm so the change never stutters
   useEffect(() => {
     const next = new Image()
     next.src = heroSlides[(index + 1) % count].image
   }, [index, count])
 
   const slide = heroSlides[index]
-  const fade = { initial: { opacity: 0 }, animate: { opacity: 1 }, exit: { opacity: 0 }, transition: { duration: reduce ? 0 : 0.7, ease: 'easeInOut' as const } }
 
   return (
-    <section className="relative isolate overflow-hidden bg-white" aria-label="Institute of Engineering & Technology">
-      {/* Desktop: the photograph fills the band, a light scrim keeps the headline readable */}
-      <div className="absolute inset-0 hidden lg:block">
+    <section className="relative isolate overflow-hidden bg-navy-950" aria-label="Institute of Engineering & Technology">
+      {/* Photograph */}
+      <div className="absolute inset-0">
         <AnimatePresence initial={false}>
-          <motion.img key={slide.image} src={slide.image} alt="" aria-hidden="true" {...fade} className="absolute inset-0 h-full w-full object-cover" />
+          <motion.img
+            key={slide.image}
+            src={slide.image}
+            alt=""
+            aria-hidden="true"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: reduce ? 0 : 0.8, ease: 'easeInOut' }}
+            className="absolute inset-0 h-full w-full object-cover"
+          />
         </AnimatePresence>
-        <div className="absolute inset-0 bg-gradient-to-r from-white from-42% via-white/88 via-62% to-transparent to-84%" />
+        {/* Cinematic scrim: deep at the bottom-left where the words sit, clear at the top-right */}
+        <div className="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/70 to-navy-950/30" />
+        <div className="absolute inset-0 bg-gradient-to-r from-navy-950/90 via-navy-950/45 to-transparent" />
       </div>
-      <div className="grid-bg absolute inset-0 opacity-70 lg:w-3/5" />
 
-      <div className="container-x relative flex min-h-[560px] flex-col justify-center py-12 sm:py-14 lg:min-h-[700px] lg:py-20">
-        <div className="max-w-2xl">
-          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="chip !border-navy-200 !bg-white !text-navy-700 shadow-soft">
-            <span className="h-2 w-2 shrink-0 rounded-full bg-saffron-400" />
-            Established 4 September 1996 · {s.motto}
-          </motion.div>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
-            className="font-display mt-6 text-4xl font-extrabold leading-[1.05] tracking-tight text-ink sm:text-5xl lg:text-[3.25rem]"
-          >
-            Institute of Engineering &amp; Technology
-            <span className="mt-3 block text-[0.52em] font-bold leading-snug text-navy-600">
-              Devi Ahilya Vishwavidyalaya, Indore
-              <span className="mt-2 block h-1 w-24 rounded-full bg-saffron-400" />
-            </span>
-          </motion.h1>
-
-          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.18 }} className="mt-6 max-w-xl leading-relaxed text-slate-700 sm:text-lg">
-            One of Central India’s leading engineering institutes: an autonomous, AICTE-approved and UGC-recognised institution offering B.Tech, M.Tech, M.Sc. and Ph.D. programmes under the NAAC A+ accredited DAVV.
-          </motion.p>
-
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.26 }} className="mt-8 flex flex-wrap items-center gap-3">
-            <Link to="/admissions" className="btn btn-primary !px-6 !py-3.5 text-base">Admission 2026-27 <ArrowRight className="h-4 w-4" /></Link>
-            <Link to="/departments" className="btn btn-secondary !py-3.5">Departments</Link>
-            <a href={s.social.youtube} target="_blank" rel="noreferrer" className="btn btn-ghost"><PlayCircle className="h-5 w-5 text-saffron-500" /> Live@IET</a>
-          </motion.div>
-
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.7, delay: 0.45 }} className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-2 text-sm font-medium text-slate-600">
-            <span className="flex items-center gap-2"><Award className="h-4 w-4 text-navy-600" /> AICTE · UGC · NAAC A+ (DAVV)</span>
-            <span className="flex items-center gap-2"><Building2 className="h-4 w-4 text-navy-600" /> Academically autonomous</span>
-            <span className="flex items-center gap-2"><MapPin className="h-4 w-4 text-navy-600" /> Vikramshila Parisar, Khandwa Road</span>
-          </motion.div>
-        </div>
-
-        {/* Mobile & tablet: the slideshow as its own picture card */}
-        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.3 }} className="relative mt-10 overflow-hidden rounded-3xl border border-line shadow-lift lg:hidden">
-          <div className="relative aspect-[4/3] sm:aspect-[16/9]">
-            <AnimatePresence initial={false}>
-              <motion.img key={slide.image} src={slide.image} alt={`${slide.title} — ${slide.caption}`} {...fade} className="absolute inset-0 h-full w-full object-cover" />
-            </AnimatePresence>
-          </div>
-          <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/80 via-ink/40 to-transparent p-4 pt-10 text-white">
-            <p className="font-display text-sm font-bold">{slide.title}</p>
-            <p className="text-xs text-white/85">{slide.caption}</p>
-          </div>
-        </motion.div>
-
-        {/* Caption for the photograph currently on screen (desktop) */}
+      <div className="container-x relative flex min-h-[560px] flex-col justify-end pb-12 pt-16 sm:min-h-[640px] sm:pb-16 sm:pt-24 lg:min-h-[740px] lg:pb-24 lg:pt-32">
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          className="hidden lg:absolute lg:bottom-12 lg:right-8 lg:block"
+          transition={{ duration: 0.5 }}
+          className="inline-flex w-fit items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3.5 py-1.5 text-xs font-semibold text-white backdrop-blur-sm"
         >
-          <div className="rounded-2xl border border-line bg-white px-4 py-3 shadow-soft">
-            <p className="font-display text-sm font-bold text-ink">{slide.title}</p>
-            <p className="text-xs text-slate-600">{slide.caption}</p>
-          </div>
+          <span className="h-1.5 w-1.5 rounded-full bg-saffron-400" />
+          <span className="sm:hidden">Established 4 September 1996</span>
+          <span className="hidden sm:inline">{s.university} · Established 4 September 1996</span>
         </motion.div>
+
+        <motion.h1
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.75, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+          className="font-display mt-6 max-w-4xl text-[2.6rem] font-extrabold leading-[1.02] tracking-tight text-white sm:text-6xl lg:text-[4.25rem]"
+        >
+          Institute of Engineering &amp; Technology
+        </motion.h1>
+
+        <motion.p
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.75, delay: 0.16 }}
+          className="font-display mt-4 text-xl font-bold tracking-tight text-saffron-300 sm:text-2xl"
+        >
+          Knowledge meets Innovation
+        </motion.p>
+
+        <motion.p
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.75, delay: 0.24 }}
+          className="mt-5 max-w-2xl text-[15px] leading-relaxed text-navy-100 sm:mt-6 sm:text-lg"
+        >
+          One of Central India’s leading engineering institutes — an autonomous, AICTE-approved and UGC-recognised institution offering B.Tech, M.Tech, M.Sc. and Ph.D. programmes under the NAAC A+ accredited DAVV.
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.75, delay: 0.32 }}
+          className="mt-7 flex flex-wrap items-center gap-3 sm:mt-9"
+        >
+          <Link to="/admissions" className="btn btn-accent !px-7 !py-4 text-base">
+            Admission 2026-27 <ArrowRight className="h-4 w-4" />
+          </Link>
+          <Link to="/departments" className="btn border border-white/25 bg-white/10 !py-4 text-base text-white backdrop-blur-sm hover:bg-white/20">
+            Explore departments
+          </Link>
+          <a href={s.social.youtube} target="_blank" rel="noreferrer" className="btn !py-4 text-base text-white hover:bg-white/10">
+            <PlayCircle className="h-5 w-5 text-saffron-300" /> Live@IET
+          </a>
+        </motion.div>
+
+        {/* Key figures */}
+        <motion.dl
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.75, delay: 0.44 }}
+          className="mt-9 grid max-w-3xl grid-cols-2 gap-x-6 gap-y-5 border-t border-white/15 pt-6 sm:mt-12 sm:gap-y-6 sm:pt-8 sm:grid-cols-4"
+        >
+          {figures.map((f) => (
+            <div key={f.label}>
+              <dt className="font-display text-2xl font-extrabold text-white sm:text-3xl">{f.value}</dt>
+              <dd className="mt-1 text-xs font-medium leading-snug text-navy-200 sm:text-sm">{f.label}</dd>
+            </div>
+          ))}
+        </motion.dl>
+
+        {/* Which photograph is on screen */}
+        <div className="pointer-events-none absolute bottom-6 right-4 hidden max-w-[45%] text-right sm:px-6 lg:block lg:px-8">
+          <AnimatePresence mode="wait">
+            <motion.p
+              key={slide.title}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.4 }}
+              className="text-xs text-white/70"
+            >
+              <span className="font-semibold text-white/90">{slide.title}</span> · {slide.caption}
+            </motion.p>
+          </AnimatePresence>
+        </div>
       </div>
     </section>
   )
