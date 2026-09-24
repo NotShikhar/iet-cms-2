@@ -7,11 +7,11 @@ import { SectionHeader } from '../ui/SectionHeader'
 
 export function CampusLife() {
   return (
-    <section className="bg-mist py-20 lg:py-28">
+    <section className="bg-mist py-14 sm:py-20 lg:py-28">
       <div className="container-x">
         <SectionHeader align="center" eyebrow="Campus Life" title="Facilities for learning, living and building." description="Hostels for 700 students, department laboratories, the ACIIE incubation centre, sports facilities and access to the DAVV central library and auditorium." />
 
-        <Stagger className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <Stagger className="mt-8 grid gap-4 sm:mt-12 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
           {facilities.map((f) => (
             <StaggerItem key={f.title}>
               <Link to={f.to} className="card card-hover group block overflow-hidden">
@@ -32,16 +32,16 @@ export function CampusLife() {
           ))}
         </Stagger>
 
-        <Reveal className="mt-14">
-          <div className="card p-6 sm:p-8">
+        <Reveal className="mt-10 sm:mt-14">
+          <div className="card p-5 sm:p-8">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <span className="eyebrow">Student Bodies</span>
-                <h3 className="font-display mt-2 text-2xl font-bold text-ink">Clubs, cells and communities</h3>
+                <h3 className="font-display mt-2 text-xl font-bold text-ink sm:text-2xl">Clubs, cells and communities</h3>
               </div>
-              <Link to="/campus-life" className="btn btn-secondary">Explore student life <ArrowUpRight className="h-4 w-4" /></Link>
+              <Link to="/campus-life" className="btn btn-secondary w-full sm:w-auto">Explore student life <ArrowUpRight className="h-4 w-4" /></Link>
             </div>
-            <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+            <div className="mt-6 grid grid-cols-1 gap-2.5 sm:grid-cols-2 sm:gap-3 lg:grid-cols-4">
               {clubs.map((c) => (
                 <Link key={c.name} to={c.to} className="flex items-center gap-3 rounded-xl border border-line p-3 transition hover:border-navy-200 hover:bg-mist">
                   <span className={`grid h-10 w-10 shrink-0 place-items-center rounded-lg text-xs font-bold ${c.color}`}>{c.name.slice(0, 2).toUpperCase()}</span>
@@ -55,15 +55,15 @@ export function CampusLife() {
           </div>
         </Reveal>
 
-        <Reveal className="mt-14">
+        <Reveal className="mt-10 sm:mt-14">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <span className="eyebrow">Campus in pictures</span>
-              <h3 className="font-display mt-2 text-2xl font-bold text-ink">Photographs from the institute</h3>
+              <h3 className="font-display mt-2 text-xl font-bold text-ink sm:text-2xl">Photographs from the institute</h3>
             </div>
-            <Link to="/campus-life" className="btn btn-secondary">Full gallery <ArrowUpRight className="h-4 w-4" /></Link>
+            <Link to="/campus-life" className="btn btn-secondary w-full sm:w-auto">Full gallery <ArrowUpRight className="h-4 w-4" /></Link>
           </div>
-          <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <div className="mt-6 grid grid-cols-2 gap-2.5 sm:grid-cols-4 sm:gap-3">
             {campusGallery.map((g, i) => (
               <figure key={g.image} className={`overflow-hidden rounded-2xl border border-line bg-white ${i === 0 || i === 5 ? 'col-span-2' : ''}`}>
                 <img src={g.image} alt={g.alt} loading="lazy" className="aspect-[4/3] h-full w-full object-cover" />

@@ -125,15 +125,15 @@ export function Navbar() {
       </div>
 
       <div className={`transition-all duration-300 ${scrolled ? 'glass border-b border-line/80 shadow-soft' : 'bg-white/95 border-b border-transparent'}`}>
-        <div className="mx-auto flex h-[72px] w-full max-w-[1400px] items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-          <Link to="/" className="flex shrink-0 items-center gap-3">
-            <img src="/media/ietnew/iet_logo-300x300.png" alt="IET DAVV" className="h-11 w-11 rounded-xl object-contain" />
-            <div className="leading-tight">
-              <div className="font-display text-[15px] font-bold tracking-tight text-ink sm:text-base xl:whitespace-nowrap xl:text-[15px] 2xl:text-base">
+        <div className="mx-auto flex h-16 w-full max-w-[1400px] items-center justify-between gap-2 px-4 sm:h-[72px] sm:gap-4 sm:px-6 lg:px-8">
+          <Link to="/" className="flex min-w-0 flex-1 items-center gap-2.5 sm:gap-3 xl:flex-none xl:shrink-0">
+            <img src="/media/ietnew/iet_logo-300x300.png" alt="IET DAVV" className="h-9 w-9 shrink-0 rounded-xl object-contain sm:h-11 sm:w-11" />
+            <div className="min-w-0 leading-tight">
+              <div className="font-display truncate text-[14px] font-bold tracking-tight text-ink sm:text-base xl:whitespace-nowrap xl:text-[15px] 2xl:text-base">
                 <span className="sm:hidden">IET DAVV Indore</span>
                 <span className="hidden sm:inline">{s.name}</span>
               </div>
-              <div className="text-[11px] font-medium text-slate-500 sm:text-xs xl:whitespace-nowrap">
+              <div className="truncate text-[11px] font-medium text-slate-500 sm:text-xs xl:whitespace-nowrap">
                 <span className="sm:hidden">{s.name}</span>
                 <span className="hidden sm:inline">{s.university}</span>
               </div>

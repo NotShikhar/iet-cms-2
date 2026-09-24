@@ -13,9 +13,9 @@ const points = [
 
 export function About() {
   return (
-    <section className="relative overflow-hidden bg-mist py-20 lg:py-28">
+    <section className="relative overflow-hidden bg-mist py-14 sm:py-20 lg:py-28">
       <div className="dot-bg absolute inset-0 opacity-50" />
-      <div className="container-x relative grid items-center gap-14 lg:grid-cols-2">
+      <div className="container-x relative grid items-center gap-10 sm:gap-14 lg:grid-cols-2">
         <div>
           <SectionHeader
             eyebrow="About the Institute"
@@ -39,9 +39,9 @@ export function About() {
         </div>
 
         <Reveal delay={0.15} className="relative">
-          <div className="grid grid-cols-2 gap-4">
-            <img src="/media/ietnew/PV02_S_65-1-scaled.jpg" alt="Main gate signboard of IET, Devi Ahilya Vishwavidyalaya, Vikramshila Parisar" className="col-span-2 h-56 w-full rounded-3xl object-cover shadow-soft sm:h-72" />
-            <img src="/media/ietnew/PV02_S_8-1-scaled.jpg" alt="Central atrium of the academic block" className="h-44 w-full rounded-3xl object-cover shadow-soft" />
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4">
+            <img src="/media/ietnew/PV02_S_65-1-scaled.jpg" alt="Main gate signboard of IET, Devi Ahilya Vishwavidyalaya, Vikramshila Parisar" className="h-48 w-full rounded-2xl object-cover shadow-soft sm:col-span-2 sm:h-72 sm:rounded-3xl" />
+            <img src="/media/ietnew/PV02_S_8-1-scaled.jpg" alt="Central atrium of the academic block" className="h-40 w-full rounded-2xl object-cover shadow-soft sm:h-44 sm:rounded-3xl" />
             <Link to="/page/directors-message" className="card flex flex-col justify-between p-5 hover:border-navy-200">
               <Quote className="h-6 w-6 text-saffron-400" />
               <p className="mt-2 text-sm leading-relaxed text-slate-600">"IET is not merely an institution; it is a living, breathing community of curious minds, and that curiosity, I believe, is the most powerful force in engineering."</p>

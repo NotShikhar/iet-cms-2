@@ -47,29 +47,29 @@ export function Footer() {
   const { content } = useCms()
   const s = content.settings
   return (
-    <footer className="relative mt-24 overflow-hidden bg-navy-950 text-navy-100">
+    <footer className="relative mt-16 overflow-hidden bg-navy-950 text-navy-100 sm:mt-24">
       <div className="dot-bg absolute inset-0 opacity-[0.12]" />
       <div className="container-x relative">
-        <div className="-translate-y-10 rounded-3xl border border-white/10 bg-gradient-to-r from-navy-600 to-navy-800 p-8 shadow-lift sm:p-10 lg:flex lg:items-center lg:justify-between">
+        <div className="-translate-y-8 rounded-2xl border border-white/10 bg-gradient-to-r from-navy-600 to-navy-800 p-6 shadow-lift sm:-translate-y-10 sm:rounded-3xl sm:p-10 lg:flex lg:items-center lg:justify-between lg:gap-8">
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-saffron-300">Admission 2026-27</p>
-            <h3 className="font-display mt-2 text-2xl font-bold text-white sm:text-3xl">Nine B.Tech programmes. Seven M.Tech specialisations. One campus in Indore.</h3>
-            <p className="mt-2 max-w-xl text-navy-100/80">Admissions through JEE (Main) and DTE Madhya Pradesh counselling. College Level Counselling for vacant seats as notified by DTE.</p>
+            <h3 className="font-display mt-2 text-xl font-bold leading-snug text-white sm:text-2xl lg:text-3xl">Nine B.Tech programmes. Seven M.Tech specialisations. One campus in Indore.</h3>
+            <p className="mt-2 max-w-xl text-[15px] text-navy-100/80 sm:text-base">Admissions through JEE (Main) and DTE Madhya Pradesh counselling. College Level Counselling for vacant seats as notified by DTE.</p>
           </div>
-          <div className="mt-6 flex flex-wrap gap-3 lg:mt-0">
-            <Link to="/admissions" className="btn btn-accent">Admission information <ArrowUpRight className="h-4 w-4" /></Link>
-            <Link to="/contact" className="btn border border-white/20 bg-white/10 text-white hover:bg-white/20">Reach us</Link>
+          <div className="mt-6 grid grid-cols-1 gap-2.5 sm:flex sm:flex-wrap sm:gap-3 lg:mt-0 lg:shrink-0">
+            <Link to="/admissions" className="btn btn-accent w-full sm:w-auto">Admission information <ArrowUpRight className="h-4 w-4" /></Link>
+            <Link to="/contact" className="btn w-full border border-white/20 bg-white/10 text-white hover:bg-white/20 sm:w-auto">Reach us</Link>
           </div>
         </div>
       </div>
 
-      <div className="container-x relative grid gap-10 pb-12 md:grid-cols-2 lg:grid-cols-5">
+      <div className="container-x relative grid gap-8 pb-12 sm:gap-10 md:grid-cols-2 lg:grid-cols-5">
         <div className="lg:col-span-2">
           <div className="flex items-center gap-3">
-            <img src="/media/ietnew/iet_logo-300x300.png" alt="IET DAVV" className="h-11 w-11 rounded-xl bg-white object-contain p-0.5" />
-            <img src={s.universityLogo} alt="Devi Ahilya Vishwavidyalaya" className="h-11 w-11 rounded-xl bg-white object-contain p-0.5" />
-            <div>
-              <div className="font-display font-bold text-white">{s.name}</div>
+            <img src="/media/ietnew/iet_logo-300x300.png" alt="IET DAVV" className="h-10 w-10 shrink-0 rounded-xl bg-white object-contain p-0.5 sm:h-11 sm:w-11" />
+            <img src={s.universityLogo} alt="Devi Ahilya Vishwavidyalaya" className="h-10 w-10 shrink-0 rounded-xl bg-white object-contain p-0.5 sm:h-11 sm:w-11" />
+            <div className="min-w-0">
+              <div className="font-display text-[15px] font-bold leading-snug text-white sm:text-base">{s.name}</div>
               <div className="text-xs text-navy-200">{s.university}</div>
             </div>
           </div>
@@ -97,9 +97,9 @@ export function Footer() {
         {cols.map((c) => (
           <div key={c.title}>
             <h4 className="font-display text-sm font-bold uppercase tracking-wider text-white">{c.title}</h4>
-            <ul className="mt-4 space-y-2.5 text-sm">
+            <ul className="mt-3 space-y-0.5 text-sm sm:mt-4 sm:space-y-2.5">
               {c.links.map((l) => (
-                <li key={l.label}><Link to={l.to} className="text-navy-200/85 transition hover:text-white">{l.label}</Link></li>
+                <li key={l.label}><Link to={l.to} className="block py-2 text-navy-200/85 transition hover:text-white sm:py-0">{l.label}</Link></li>
               ))}
             </ul>
           </div>
@@ -108,17 +108,17 @@ export function Footer() {
 
       <div className="container-x relative border-t border-white/10 py-6">
         <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-navy-300">Departments</p>
-        <div className="flex flex-wrap gap-x-5 gap-y-1.5 text-sm">
+        <div className="flex flex-wrap gap-x-5 gap-y-0.5 text-sm sm:gap-y-1.5">
           {departments.map((d) => (
-            <Link key={d.slug} to={`/departments/${d.slug}`} className="text-navy-200/80 hover:text-white">{d.name}</Link>
+            <Link key={d.slug} to={`/departments/${d.slug}`} className="py-1.5 text-navy-200/80 hover:text-white sm:py-0">{d.name}</Link>
           ))}
         </div>
       </div>
       <div className="container-x relative border-t border-white/10 py-6">
         <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-navy-300">Official portals</p>
-        <div className="flex flex-wrap gap-x-5 gap-y-1.5 text-sm">
+        <div className="flex flex-wrap gap-x-5 gap-y-0.5 text-sm sm:gap-y-1.5">
           {Object.entries(s.links).map(([k, v]) => (
-            <a key={k} href={v} target="_blank" rel="noreferrer" className="text-navy-200/80 hover:text-white">{k}</a>
+            <a key={k} href={v} target="_blank" rel="noreferrer" className="py-1.5 text-navy-200/80 hover:text-white sm:py-0">{k}</a>
           ))}
         </div>
       </div>

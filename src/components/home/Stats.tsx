@@ -4,12 +4,12 @@ import { Stagger, StaggerItem } from '../ui/Reveal'
 
 export function Stats() {
   return (
-    <section className="py-14 lg:py-16">
+    <section className="py-10 sm:py-14 lg:py-16">
       <div className="container-x">
         <p className="text-center text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
           Approvals &amp; accreditation
         </p>
-        <Stagger className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <Stagger className="mt-6 grid gap-3 sm:mt-7 sm:grid-cols-2 lg:grid-cols-3">
           {accreditations.map((a) => (
             <StaggerItem key={a.name}>
               <div className="flex h-full items-start gap-3 rounded-2xl border border-line bg-white p-4 transition hover:border-navy-200 hover:shadow-soft">

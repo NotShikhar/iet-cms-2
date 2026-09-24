@@ -56,7 +56,7 @@ export function HeroSlider() {
         <div className="absolute inset-0 bg-gradient-to-r from-navy-950/90 via-navy-950/45 to-transparent" />
       </div>
 
-      <div className="container-x relative flex min-h-[560px] flex-col justify-end pb-12 pt-16 sm:min-h-[640px] sm:pb-16 sm:pt-24 lg:min-h-[740px] lg:pb-24 lg:pt-32">
+      <div className="container-x relative flex min-h-[520px] flex-col justify-end pb-10 pt-12 sm:min-h-[640px] sm:pb-16 sm:pt-24 lg:min-h-[740px] lg:pb-24 lg:pt-32">
         <motion.div
           initial={{ opacity: 0, y: 14 }}
           animate={{ opacity: 1, y: 0 }}
@@ -72,7 +72,7 @@ export function HeroSlider() {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.75, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
-          className="font-display mt-6 max-w-4xl text-[2.6rem] font-extrabold leading-[1.02] tracking-tight text-white sm:text-6xl lg:text-[4.25rem]"
+          className="font-display mt-5 max-w-4xl text-[2rem] font-extrabold leading-[1.06] tracking-tight text-white min-[400px]:text-[2.35rem] sm:mt-6 sm:text-6xl sm:leading-[1.02] lg:text-[4.25rem]"
         >
           Institute of Engineering &amp; Technology
         </motion.h1>
@@ -81,7 +81,7 @@ export function HeroSlider() {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.75, delay: 0.16 }}
-          className="font-display mt-4 text-xl font-bold tracking-tight text-saffron-300 sm:text-2xl"
+          className="font-display mt-3 text-lg font-bold tracking-tight text-saffron-300 sm:mt-4 sm:text-2xl"
         >
           Knowledge meets Innovation
         </motion.p>
@@ -90,7 +90,7 @@ export function HeroSlider() {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.75, delay: 0.24 }}
-          className="mt-5 max-w-2xl text-[15px] leading-relaxed text-navy-100 sm:mt-6 sm:text-lg"
+          className="mt-4 max-w-2xl text-[14.5px] leading-relaxed text-navy-100 sm:mt-6 sm:text-lg"
         >
           One of Central India’s leading engineering institutes — an autonomous, AICTE-approved and UGC-recognised institution offering B.Tech, M.Tech, M.Sc. and Ph.D. programmes under the NAAC A+ accredited DAVV.
         </motion.p>
@@ -99,17 +99,20 @@ export function HeroSlider() {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.75, delay: 0.32 }}
-          className="mt-7 flex flex-wrap items-center gap-3 sm:mt-9"
+          className="mt-6 grid grid-cols-1 gap-2.5 sm:mt-9 sm:flex sm:flex-wrap sm:items-center sm:gap-3"
         >
-          <Link to="/admissions" className="btn btn-accent !px-7 !py-4 text-base">
+          <Link to="/admissions" className="btn btn-accent w-full !py-3.5 text-[15px] sm:w-auto sm:!px-7 sm:!py-4 sm:text-base">
             Admission 2026-27 <ArrowRight className="h-4 w-4" />
           </Link>
-          <Link to="/departments" className="btn border border-white/25 bg-white/10 !py-4 text-base text-white backdrop-blur-sm hover:bg-white/20">
-            Explore departments
-          </Link>
-          <a href={s.social.youtube} target="_blank" rel="noreferrer" className="btn !py-4 text-base text-white hover:bg-white/10">
-            <PlayCircle className="h-5 w-5 text-saffron-300" /> Live@IET
-          </a>
+          <div className="grid grid-cols-2 gap-2.5 sm:contents">
+            <Link to="/departments" className="btn w-full border border-white/25 bg-white/10 !px-3 !py-3.5 text-[15px] text-white backdrop-blur-sm hover:bg-white/20 sm:w-auto sm:!px-5 sm:!py-4 sm:text-base">
+              <span className="sm:hidden">Departments</span>
+              <span className="hidden sm:inline">Explore departments</span>
+            </Link>
+            <a href={s.social.youtube} target="_blank" rel="noreferrer" className="btn w-full border border-white/25 !px-3 !py-3.5 text-[15px] text-white hover:bg-white/10 sm:w-auto sm:border-0 sm:!px-5 sm:!py-4 sm:text-base">
+              <PlayCircle className="h-5 w-5 shrink-0 text-saffron-300" /> Live@IET
+            </a>
+          </div>
         </motion.div>
 
         {/* Key figures */}
@@ -117,11 +120,11 @@ export function HeroSlider() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.75, delay: 0.44 }}
-          className="mt-9 grid max-w-3xl grid-cols-2 gap-x-6 gap-y-5 border-t border-white/15 pt-6 sm:mt-12 sm:gap-y-6 sm:pt-8 sm:grid-cols-4"
+          className="mt-8 grid max-w-3xl grid-cols-2 gap-x-4 gap-y-4 border-t border-white/15 pt-5 sm:mt-12 sm:gap-x-6 sm:gap-y-6 sm:pt-8 sm:grid-cols-4"
         >
           {figures.map((f) => (
             <div key={f.label}>
-              <dt className="font-display text-2xl font-extrabold text-white sm:text-3xl">{f.value}</dt>
+              <dt className="font-display text-xl font-extrabold text-white sm:text-3xl">{f.value}</dt>
               <dd className="mt-1 text-xs font-medium leading-snug text-navy-200 sm:text-sm">{f.label}</dd>
             </div>
           ))}

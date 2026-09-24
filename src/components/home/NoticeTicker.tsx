@@ -10,8 +10,8 @@ export function NoticeTicker() {
 
   return (
     <div className="border-b border-line bg-white">
-      <div className="container-x flex items-center gap-4 py-2.5">
-        <span className="flex shrink-0 items-center gap-2 rounded-lg bg-saffron-400 px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-ink">
+      <div className="container-x flex items-center gap-3 py-2 sm:gap-4 sm:py-2.5">
+        <span className="flex shrink-0 items-center gap-2 rounded-lg bg-saffron-400 px-2.5 py-1.5 text-xs font-bold uppercase tracking-wider text-ink sm:px-3">
           <Megaphone className="h-3.5 w-3.5" />
           <span className="hidden sm:inline">Latest</span>
         </span>
@@ -23,11 +23,11 @@ export function NoticeTicker() {
                 href={n.url || '#'}
                 target={n.url ? '_blank' : undefined}
                 rel="noreferrer"
-                className="flex shrink-0 items-center gap-2 text-sm text-slate-700 hover:text-navy-700"
+                className="flex shrink-0 items-center gap-2 text-[13px] text-slate-700 hover:text-navy-700 sm:text-sm"
               >
                 <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-navy-400" />
                 <span className="font-medium">{n.title}</span>
-                <span className="text-xs text-slate-400">{fmtDate(n.date)}</span>
+                <span className="hidden text-xs text-slate-400 sm:inline">{fmtDate(n.date)}</span>
               </a>
             ))}
           </div>

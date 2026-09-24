@@ -9,26 +9,26 @@ import { SectionHeader } from '../ui/SectionHeader'
 
 export function Placements() {
   return (
-    <section className="py-20 lg:py-28">
+    <section className="py-14 sm:py-20 lg:py-28">
       <div className="container-x">
-        <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+        <div className="grid gap-8 sm:gap-12 lg:grid-cols-2 lg:items-center">
           <div>
             <SectionHeader eyebrow="Training & Placement" title="Careers that start on campus." description="The Centralized Placement Cell, led by Dr. Govind Maheshwari, works with recruiters across IT, product, analytics and core engineering. The 2026-27 season opened with around 90 offers and a highest package of ₹34 lakh by August 2026." />
-            <Reveal delay={0.1} className="mt-8 grid grid-cols-2 gap-4">
+            <Reveal delay={0.1} className="mt-6 grid grid-cols-2 gap-3 sm:mt-8 sm:gap-4">
               {placementStats.map((s) => (
-                <div key={s.label} className="card p-5">
-                  <p className="font-display text-3xl font-extrabold text-navy-700"><Counter value={s.value} suffix={s.suffix} decimals={s.decimals ?? 0} /></p>
-                  <p className="mt-1 text-sm text-slate-500">{s.label}</p>
+                <div key={s.label} className="card p-4 sm:p-5">
+                  <p className="font-display text-2xl font-extrabold text-navy-700 sm:text-3xl"><Counter value={s.value} suffix={s.suffix} decimals={s.decimals ?? 0} /></p>
+                  <p className="mt-1 text-[13px] leading-snug text-slate-500 sm:text-sm">{s.label}</p>
                 </div>
               ))}
             </Reveal>
             <Reveal delay={0.2}>
-              <Link to="/placements" className="btn btn-primary mt-8">Placement statistics <ArrowRight className="h-4 w-4" /></Link>
+              <Link to="/placements" className="btn btn-primary mt-6 w-full sm:mt-8 sm:w-auto">Placement statistics <ArrowRight className="h-4 w-4" /></Link>
             </Reveal>
           </div>
 
           <Reveal delay={0.15} className="min-w-0">
-            <div className="card min-w-0 p-6 sm:p-8">
+            <div className="card min-w-0 p-5 sm:p-8">
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">Placement percentage</p>
@@ -36,7 +36,7 @@ export function Placements() {
                 </div>
                 <span className="grid h-10 w-10 place-items-center rounded-xl bg-navy-50 text-navy-600"><Briefcase className="h-5 w-5" /></span>
               </div>
-              <div className="mt-8 flex h-44 items-end gap-6">
+              <div className="mt-8 flex h-40 items-end gap-4 sm:h-44 sm:gap-6">
                 {placementRate.map((p, i) => (
                   <motion.div
                     key={p.session}
@@ -57,7 +57,7 @@ export function Placements() {
                   </motion.div>
                 ))}
               </div>
-              <div className="mt-6 grid grid-cols-2 gap-3 border-t border-line pt-5 text-sm">
+              <div className="mt-6 grid grid-cols-1 gap-3 border-t border-line pt-5 text-sm sm:grid-cols-2">
                 {placementYears.map((y) => (
                   <div key={y.year} className="rounded-xl bg-mist p-3">
                     <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">{y.year}</p>
@@ -70,16 +70,16 @@ export function Placements() {
           </Reveal>
         </div>
 
-        <Reveal className="mt-16">
+        <Reveal className="mt-12 sm:mt-16">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <span className="eyebrow">Recruiters</span>
-              <h3 className="font-display mt-2 text-2xl font-bold text-ink">Companies that hire from IET</h3>
+              <h3 className="font-display mt-2 text-xl font-bold text-ink sm:text-2xl">Companies that hire from IET</h3>
             </div>
-            <p className="text-sm text-slate-500">As named in the IET-DAVV Institute Profile</p>
+            <p className="text-[13px] text-slate-500 sm:text-sm">As named in the IET-DAVV Institute Profile</p>
           </div>
         </Reveal>
-        <RecruiterWall className="mt-8" />
+        <RecruiterWall className="mt-6 sm:mt-8" />
       </div>
     </section>
   )

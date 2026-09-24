@@ -20,22 +20,23 @@ export function NoticesEvents() {
   const events = content.events.filter((e) => e.published).slice(0, 5)
 
   return (
-    <section className="bg-mist py-20 lg:py-28">
+    <section className="bg-mist py-14 sm:py-20 lg:py-28">
       <div className="container-x">
         <SectionHeader eyebrow="Notice Board" title="Notices, circulars and upcoming events." description="Official communication from the institute: examination schedules, admission circulars, Ph.D. notices, tenders and events." />
 
-        <div className="mt-12 grid gap-6 lg:grid-cols-5">
+        <div className="mt-8 grid gap-5 sm:mt-12 sm:gap-6 lg:grid-cols-5">
           <Reveal className="lg:col-span-3">
             <div className="card h-full overflow-hidden">
-              <div className="flex items-center justify-between border-b border-line px-6 py-4">
-                <h3 className="font-display flex items-center gap-2 text-lg font-bold text-ink"><Bell className="h-5 w-5 text-saffron-500" /> Latest Notices</h3>
-                <Link to="/notices" className="text-sm font-semibold text-navy-600 hover:underline">View all</Link>
+              <div className="flex items-center justify-between gap-3 border-b border-line px-4 py-3.5 sm:px-6 sm:py-4">
+                <h3 className="font-display flex items-center gap-2 text-base font-bold text-ink sm:text-lg"><Bell className="h-5 w-5 shrink-0 text-saffron-500" /> Latest Notices</h3>
+                <Link to="/notices" className="-m-2 shrink-0 p-2 text-sm font-semibold text-navy-600 hover:underline">View all</Link>
               </div>
-              <ul className="max-h-[520px] divide-y divide-line overflow-y-auto">
+              {/* No inner scroll on phones — a nested scroller traps touch swipes */}
+              <ul className="divide-y divide-line lg:max-h-[520px] lg:overflow-y-auto">
                 {notices.map((n) => (
                   <li key={n.id}>
-                    <a href={n.url || '#'} target={n.url ? '_blank' : undefined} rel="noreferrer" className="group flex items-start gap-4 px-6 py-4 transition hover:bg-mist">
-                      <div className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-navy-50 text-navy-600"><FileText className="h-4 w-4" /></div>
+                    <a href={n.url || '#'} target={n.url ? '_blank' : undefined} rel="noreferrer" className="group flex items-start gap-3 px-4 py-3.5 transition hover:bg-mist sm:gap-4 sm:px-6 sm:py-4">
+                      <div className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-navy-50 text-navy-600 sm:h-10 sm:w-10"><FileText className="h-4 w-4" /></div>
                       <div className="min-w-0 flex-1">
                         <div className="flex flex-wrap items-center gap-2">
                           <span className={`rounded-md px-2 py-0.5 text-[11px] font-semibold ${catColor[n.category] ?? catColor.General}`}>{n.category}</span>
@@ -53,16 +54,16 @@ export function NoticesEvents() {
 
           <Reveal delay={0.1} className="lg:col-span-2">
             <div className="card h-full overflow-hidden">
-              <div className="flex items-center justify-between border-b border-line px-6 py-4">
-                <h3 className="font-display flex items-center gap-2 text-lg font-bold text-ink"><CalendarDays className="h-5 w-5 text-teal-500" /> Events</h3>
-                <Link to="/page/academic-calendar" className="text-sm font-semibold text-navy-600 hover:underline">Calendar</Link>
+              <div className="flex items-center justify-between gap-3 border-b border-line px-4 py-3.5 sm:px-6 sm:py-4">
+                <h3 className="font-display flex items-center gap-2 text-base font-bold text-ink sm:text-lg"><CalendarDays className="h-5 w-5 shrink-0 text-teal-500" /> Events</h3>
+                <Link to="/page/academic-calendar" className="-m-2 shrink-0 p-2 text-sm font-semibold text-navy-600 hover:underline">Calendar</Link>
               </div>
               <ul className="divide-y divide-line">
                 {events.map((e) => {
                   const d = new Date(e.date)
                   return (
-                    <li key={e.id} className="group flex gap-4 px-6 py-4 transition hover:bg-mist">
-                      <div className="flex h-14 w-14 shrink-0 flex-col items-center justify-center rounded-xl bg-navy-600 text-white">
+                    <li key={e.id} className="group flex gap-3 px-4 py-3.5 transition hover:bg-mist sm:gap-4 sm:px-6 sm:py-4">
+                      <div className="flex h-12 w-12 shrink-0 flex-col items-center justify-center rounded-xl bg-navy-600 text-white sm:h-14 sm:w-14">
                         <span className="font-display text-xl font-bold leading-none">{d.getDate()}</span>
                         <span className="text-[11px] font-medium uppercase">{d.toLocaleString('en', { month: 'short' })}</span>
                       </div>
@@ -78,7 +79,7 @@ export function NoticesEvents() {
                   )
                 })}
               </ul>
-              <div className="px-6 py-4">
+              <div className="px-4 py-4 sm:px-6">
                 <Link to="/campus-life" className="btn btn-secondary w-full">Campus life <ArrowRight className="h-4 w-4" /></Link>
               </div>
             </div>
