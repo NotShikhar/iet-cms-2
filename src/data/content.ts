@@ -115,7 +115,7 @@ export const quickLinks = [
   { label: 'Notices', icon: 'Bell', href: '/notices', tone: 'rose' },
   { label: 'Scholarships', icon: 'Award', href: '/page/scholarships', tone: 'violet' },
   { label: 'E-Books', icon: 'BookOpen', href: '/page/e-books', tone: 'sky' },
-  { label: 'Alumni', icon: 'Users', href: '/page/notable-alumni', tone: 'emerald' },
+  { label: 'Alumni', icon: 'Users', href: 'https://ietdavvalumni.com/', tone: 'emerald' },
   { label: 'IET Times', icon: 'Newspaper', href: '/page/iet-times', tone: 'slate' },
 ] as const
 

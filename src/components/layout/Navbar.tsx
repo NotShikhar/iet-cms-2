@@ -4,6 +4,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { useCms } from '../../cms/store'
 import { departments } from '../../data/departments'
+import { SmartLink } from '../ui/SmartLink'
 
 type MenuItem = { label: string; to: string; children?: { label: string; to: string; desc?: string }[] }
 
@@ -19,7 +20,7 @@ const menu: MenuItem[] = [
       { label: "Director's Message", to: '/page/directors-message', desc: 'Dr. Pratosh Bansal' },
       { label: "Vice Chancellor's Message", to: '/page/vice-chancellors-message', desc: 'Prof. Rakesh Singhai' },
       { label: 'Strategic Plan', to: '/page/strategic-plan', desc: 'Goals & action points' },
-      { label: 'Alumni', to: '/page/notable-alumni', desc: 'Notable alumni & network' },
+      { label: 'Alumni', to: 'https://ietdavvalumni.com/', desc: 'IET DAVV alumni network' },
       { label: 'Administrative Officer', to: '/page/administrative-officer', desc: 'Dr. Paresh Atri' },
       { label: 'Committees & Cells', to: '/page/committees', desc: 'Statutory committees' },
       { label: 'Mandatory Disclosure & EOA', to: '/page/mandatory-disclosure', desc: 'AICTE documents' },
@@ -237,13 +238,13 @@ function Dropdown({ items }: { items: { label: string; to: string; desc?: string
     >
       <div className={`glass rounded-2xl p-2 ${wide ? "grid gap-x-1 sm:grid-cols-2" : ""}`}>
         {items.map((c) => (
-          <Link key={c.label} to={c.to} className="group flex items-start gap-3 rounded-xl px-3 py-2.5 hover:bg-navy-50">
+          <SmartLink key={c.label} to={c.to} className="group flex items-start gap-3 rounded-xl px-3 py-2.5 hover:bg-navy-50">
             <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-saffron-400" />
             <span className="min-w-0">
               <span className="block text-sm font-semibold text-ink group-hover:text-navy-700">{c.label}</span>
               {c.desc && <span className="block text-xs text-slate-500">{c.desc}</span>}
             </span>
-          </Link>
+          </SmartLink>
         ))}
       </div>
     </motion.div>
@@ -269,9 +270,9 @@ function MobileItem({ item }: { item: MenuItem }) {
           <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
             <div className="ml-3 border-l border-line pl-3">
               {item.children.map((c) => (
-                <Link key={c.label} to={c.to} className="block rounded-lg px-3 py-2 text-sm text-slate-600 hover:bg-navy-50 hover:text-navy-700">
+                <SmartLink key={c.label} to={c.to} className="block rounded-lg px-3 py-2 text-sm text-slate-600 hover:bg-navy-50 hover:text-navy-700">
                   {c.label}
-                </Link>
+                </SmartLink>
               ))}
             </div>
           </motion.div>

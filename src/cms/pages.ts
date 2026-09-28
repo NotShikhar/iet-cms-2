@@ -367,7 +367,7 @@ Action points: annual alumni meet; spreading the alumni network more cohesively;
 
 **Alumni contributions** – mentorship programmes, startup incubation and placement assistance.
 
-Join the official alumni network: [IET DAVV Alumni on AlmaConnect](https://ietdavvalumni.almaconnect.com/)`,
+Join the official alumni network: [ietdavvalumni.com](https://ietdavvalumni.com/)`,
       },
     ],
   },

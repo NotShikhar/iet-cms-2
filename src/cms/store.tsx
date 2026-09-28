@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
 import { defaultContent } from './defaultContent'
-import type { CmsContent, CmsPage, EventItem, NewsItem, Notice } from './types'
+import type { CmsContent, CmsPage, EventItem, MediaItem, NewsItem, Notice } from './types'
 
 const KEY = 'ietdavv-cms-content-v1'
 
@@ -16,6 +16,11 @@ type Store = {
   upsertNews: (n: NewsItem) => void
   deleteNews: (id: string) => void
   upsertPage: (p: CmsPage) => void
+  /** Insert a media item, or replace the one currently at `originalPath`. */
+  upsertMedia: (m: MediaItem, originalPath?: string) => void
+  deleteMedia: (path: string) => void
+  /** Set when the browser refused to save (usually localStorage quota exceeded). */
+  saveError: string | null
 }
 
 const Ctx = createContext<Store | null>(null)
@@ -25,7 +30,9 @@ function load(): { content: CmsContent; dirty: boolean } {
     const raw = localStorage.getItem(KEY)
     if (raw) {
       const saved = JSON.parse(raw) as Partial<CmsContent>
-      return { content: { ...defaultContent, ...saved, settings: { ...defaultContent.settings, ...(saved.settings ?? {}) } }, dirty: true }
+      // portal links aren't editable in the admin, so always take them from code (keeps URL updates from being masked by old saves)
+      const settings = { ...defaultContent.settings, ...(saved.settings ?? {}), links: defaultContent.settings.links }
+      return { content: { ...defaultContent, ...saved, settings }, dirty: true }
     }
   } catch {
     /* ignore */
@@ -35,17 +42,18 @@ function load(): { content: CmsContent; dirty: boolean } {
 
 export function CmsProvider({ children }: { children: ReactNode }) {
   const [{ content, dirty }, setState] = useState(load)
+  const [saveError, setSaveError] = useState<string | null>(null)
 
   useEffect(() => {
     if (!dirty) return
     try {
-      const { media, videos, documents, ...rest } = content
-      void media
+      const { videos, documents, ...rest } = content
       void videos
       void documents
       localStorage.setItem(KEY, JSON.stringify(rest))
+      setSaveError(null)
     } catch {
-      /* ignore */
+      setSaveError('Browser storage is full — the latest change was not saved. Remove some uploaded images or use image URLs instead.')
     }
   }, [content, dirty])
 
@@ -60,6 +68,7 @@ export function CmsProvider({ children }: { children: ReactNode }) {
       /* ignore */
     }
     setState({ content: defaultContent, dirty: false })
+    setSaveError(null)
   }, [])
 
   const upsert = <T extends { id: string }>(list: T[], item: T) => {
@@ -90,8 +99,20 @@ export function CmsProvider({ children }: { children: ReactNode }) {
           else pages[i] = p
           return { ...c, pages }
         }),
+      upsertMedia: (m, originalPath) =>
+        update((c) => {
+          const i = originalPath === undefined ? -1 : c.media.findIndex((x) => x.path === originalPath)
+          if (i === -1) return { ...c, media: [m, ...c.media] }
+          const media = [...c.media]
+          media[i] = m
+          // keep news stories that use this image pointing at it
+          const news = m.path === originalPath ? c.news : c.news.map((n) => (n.image === originalPath ? { ...n, image: m.path } : n))
+          return { ...c, media, news }
+        }),
+      deleteMedia: (path) => update((c) => ({ ...c, media: c.media.filter((x) => x.path !== path) })),
+      saveError,
     }),
-    [content, dirty, update, reset],
+    [content, dirty, update, reset, saveError],
   )
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>

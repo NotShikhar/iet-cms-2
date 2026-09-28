@@ -1,10 +1,10 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import { Bell, CalendarDays, Check, Eye, FileText, Image, LayoutDashboard, LogOut, Newspaper, Pencil, Plus, RotateCcw, Save, Settings, Trash2, Video, X } from 'lucide-react'
-import { useMemo, useState, type ReactNode } from 'react'
+import { Bell, CalendarDays, Check, Eye, FileText, Image, LayoutDashboard, Link2, LogOut, Newspaper, Pencil, Plus, RotateCcw, Save, Settings, Trash2, Upload, Video, X } from 'lucide-react'
+import { useMemo, useRef, useState, type ReactNode } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../cms/auth'
 import { fmtDate, uid, useCms } from '../cms/store'
-import type { CmsPage, EventItem, NewsItem, Notice, NoticeCategory } from '../cms/types'
+import type { CmsPage, EventItem, MediaItem, NewsItem, Notice, NoticeCategory } from '../cms/types'
 
 type Tab = 'Dashboard' | 'Notices' | 'Events' | 'News' | 'Pages' | 'Media' | 'Documents' | 'Videos' | 'Settings'
 const nav: { i: typeof Bell; l: Tab }[] = [
@@ -334,7 +334,7 @@ function NewsForm({ value, onSave, onCancel }: { value: NewsItem; onSave: (n: Ne
       <label className="md:col-span-2"><span className={label}>Image (from media library)</span>
         <select value={n.image ?? ''} onChange={(e) => setN({ ...n, image: e.target.value })} className={input}>
           <option value="">— none —</option>
-          {content.media.filter((m) => /\.(jpe?g|png|webp)$/i.test(m.path)).map((m) => <option key={m.path} value={m.path}>{m.alt || m.path}</option>)}
+          {content.media.filter((m) => /\.(jpe?g|png|webp)$/i.test(m.path) || m.path.startsWith('data:image/')).map((m) => <option key={m.path} value={m.path}>{m.alt || displayPath(m.path)}</option>)}
         </select>
       </label>
       <label className="md:col-span-2"><span className={label}>Link (optional)</span><input value={n.url ?? ''} onChange={(e) => setN({ ...n, url: e.target.value })} className={input} /></label>
@@ -399,25 +399,147 @@ function PagesAdmin() {
 }
 
 /* ---------- Media / Documents / Videos / Settings ---------- */
+/** Downscale an uploaded image and return it as a data URL, so it fits in browser storage. */
+function fileToDataUrl(file: File, maxSide = 1600, quality = 0.82): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file)
+    const img = new window.Image()
+    img.onload = () => {
+      const scale = Math.min(1, maxSide / Math.max(img.width, img.height))
+      const canvas = document.createElement('canvas')
+      canvas.width = Math.round(img.width * scale)
+      canvas.height = Math.round(img.height * scale)
+      canvas.getContext('2d')!.drawImage(img, 0, 0, canvas.width, canvas.height)
+      URL.revokeObjectURL(url)
+      resolve(canvas.toDataURL(file.type === 'image/png' ? 'image/png' : 'image/jpeg', quality))
+    }
+    img.onerror = () => { URL.revokeObjectURL(url); reject(new Error(`Could not read ${file.name}`)) }
+    img.src = url
+  })
+}
+
+const isUpload = (path: string) => path.startsWith('data:')
+const displayPath = (path: string) => (isUpload(path) ? 'Uploaded image' : path)
+const titleFromFile = (name: string) => name.replace(/\.[^.]+$/, '').replace(/[-_]+/g, ' ').trim()
+
+type MediaDraft = { item: MediaItem; originalPath?: string }
+
 function MediaAdmin() {
-  const { content } = useCms()
+  const { content, upsertMedia, deleteMedia, saveError } = useCms()
   const [filter, setFilter] = useState('all')
+  const [q, setQ] = useState('')
+  const [editing, setEditing] = useState<MediaDraft | null>(null)
+  const [busy, setBusy] = useState(false)
+  const fileRef = useRef<HTMLInputElement>(null)
   const tags = useMemo(() => ['all', ...new Set(content.media.flatMap((m) => m.tags))], [content.media])
-  const list = content.media.filter((m) => filter === 'all' || m.tags.includes(filter))
+  const list = content.media.filter((m) => (filter === 'all' || m.tags.includes(filter)) && (m.alt + ' ' + m.path.slice(0, 200)).toLowerCase().includes(q.toLowerCase()))
+
+  const onUpload = async (files: FileList | null) => {
+    if (!files?.length) return
+    setBusy(true)
+    const tag = filter === 'all' ? 'uploads' : filter
+    for (const f of Array.from(files).filter((x) => x.type.startsWith('image/'))) {
+      try {
+        const path = await fileToDataUrl(f)
+        upsertMedia({ path, alt: titleFromFile(f.name), tags: [tag], source: 'upload' })
+      } catch (err) {
+        alert((err as Error).message)
+      }
+    }
+    setBusy(false)
+    if (fileRef.current) fileRef.current.value = ''
+  }
+
   return (
-    <Panel title={`Media library (${content.media.length})`} action={<select value={filter} onChange={(e) => setFilter(e.target.value)} className={`${input} !h-9 w-44`}>{tags.map((t) => <option key={t}>{t}</option>)}</select>}>
+    <Panel
+      title={`Media library (${content.media.length})`}
+      action={
+        <div className="flex flex-wrap items-center justify-end gap-2">
+          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search" className={`${input} !h-9 w-36`} />
+          <select value={filter} onChange={(e) => setFilter(e.target.value)} className={`${input} !h-9 w-36`}>{tags.map((t) => <option key={t}>{t}</option>)}</select>
+          <input ref={fileRef} type="file" accept="image/*" multiple hidden onChange={(e) => onUpload(e.target.files)} />
+          <button onClick={() => fileRef.current?.click()} disabled={busy} className="btn btn-primary !px-3 !py-2 text-xs"><Upload className="h-4 w-4" /> {busy ? 'Uploading…' : 'Upload'}</button>
+          <button onClick={() => setEditing({ item: { path: '', alt: '', tags: filter === 'all' ? [] : [filter], source: 'url' } })} className="btn btn-secondary !px-3 !py-2 text-xs"><Link2 className="h-4 w-4" /> Add by URL</button>
+        </div>
+      }
+    >
+      {saveError && <p className="border-b border-rose-200 bg-rose-50 px-5 py-2 text-xs font-medium text-rose-700">{saveError}</p>}
+      <AnimatePresence>
+        {editing && (
+          <MediaForm
+            key={editing.originalPath ?? 'new'}
+            value={editing.item}
+            isNew={editing.originalPath === undefined}
+            taken={(p) => p !== editing.originalPath && content.media.some((m) => m.path === p)}
+            onCancel={() => setEditing(null)}
+            onSave={(m) => { upsertMedia(m, editing.originalPath); setEditing(null) }}
+          />
+        )}
+      </AnimatePresence>
+      {list.length === 0 && <p className="p-8 text-center text-sm text-slate-500">No media matches.</p>}
       <div className="grid grid-cols-2 gap-3 p-4 sm:grid-cols-3 lg:grid-cols-4">
         {list.map((m) => (
-          <figure key={m.path} className="overflow-hidden rounded-xl border border-line bg-white">
+          <figure key={m.path} className="group relative overflow-hidden rounded-xl border border-line bg-white">
             <img src={m.path} alt={m.alt} loading="lazy" className="aspect-[4/3] w-full object-cover" />
+            <div className="absolute right-2 top-2 flex gap-1 opacity-100 transition sm:opacity-0 sm:group-hover:opacity-100 sm:group-focus-within:opacity-100">
+              <button onClick={() => setEditing({ item: m, originalPath: m.path })} className="rounded-lg bg-white/95 p-1.5 text-slate-600 shadow-soft hover:text-navy-600" aria-label="Edit"><Pencil className="h-4 w-4" /></button>
+              {!isUpload(m.path) && <a href={m.path} target="_blank" rel="noreferrer" className="rounded-lg bg-white/95 p-1.5 text-slate-600 shadow-soft hover:text-navy-600" aria-label="Open"><Eye className="h-4 w-4" /></a>}
+              <button onClick={() => confirm(`Delete "${m.alt || 'this image'}" from the media library?`) && deleteMedia(m.path)} className="rounded-lg bg-white/95 p-1.5 text-slate-600 shadow-soft hover:text-rose-600" aria-label="Delete"><Trash2 className="h-4 w-4" /></button>
+            </div>
             <figcaption className="p-2">
-              <p className="truncate text-xs font-semibold text-ink">{m.alt}</p>
-              <p className="truncate text-[11px] text-slate-400">{m.path}</p>
+              <p className="truncate text-xs font-semibold text-ink">{m.alt || <span className="italic text-slate-400">Untitled</span>}</p>
+              <p className="truncate text-[11px] text-slate-400">{displayPath(m.path)}</p>
+              {m.tags.length > 0 && (
+                <div className="mt-1 flex flex-wrap gap-1">
+                  {m.tags.map((t) => <span key={t} className="rounded bg-navy-50 px-1.5 text-[10px] font-semibold text-navy-700">{t}</span>)}
+                </div>
+              )}
             </figcaption>
           </figure>
         ))}
       </div>
     </Panel>
+  )
+}
+
+function MediaForm({ value, isNew, taken, onSave, onCancel }: { value: MediaItem; isNew: boolean; taken: (path: string) => boolean; onSave: (m: MediaItem) => void; onCancel: () => void }) {
+  const [m, setM] = useState(value)
+  const [tagText, setTagText] = useState(value.tags.join(', '))
+  const [err, setErr] = useState('')
+  const replaceFile = async (f: File | undefined) => {
+    if (!f) return
+    try {
+      const path = await fileToDataUrl(f)
+      setM((cur) => ({ ...cur, path, source: 'upload', alt: cur.alt || titleFromFile(f.name) }))
+    } catch (e) {
+      setErr((e as Error).message)
+    }
+  }
+  const save = () => {
+    const path = m.path.trim()
+    if (!path) return setErr('Provide an image URL or choose a file.')
+    if (taken(path)) return setErr('Another item in the library already uses this image path.')
+    onSave({ ...m, path, alt: m.alt.trim(), tags: [...new Set(tagText.split(',').map((t) => t.trim().toLowerCase()).filter(Boolean))] })
+  }
+  return (
+    <FormShell title={isNew ? 'Add media' : 'Edit media'} onCancel={onCancel} onSave={save}>
+      <div className="md:row-span-3">
+        <span className={label}>Preview</span>
+        {m.path ? <img src={m.path} alt={m.alt} className="aspect-[4/3] w-full rounded-xl border border-line bg-white object-contain" /> : <div className="grid aspect-[4/3] w-full place-items-center rounded-xl border border-dashed border-line bg-white text-slate-400"><Image className="h-6 w-6" /></div>}
+      </div>
+      <label><span className={label}>Title / alt text</span><input value={m.alt} onChange={(e) => setM({ ...m, alt: e.target.value })} placeholder="Describe the image" className={input} /></label>
+      <label><span className={label}>Tags (comma separated)</span><input value={tagText} onChange={(e) => setTagText(e.target.value)} placeholder="campus, students, placements" className={input} /></label>
+      <div>
+        <span className={label}>Image</span>
+        <input value={isUpload(m.path) ? '' : m.path} onChange={(e) => { setErr(''); setM({ ...m, path: e.target.value, source: 'url' }) }} placeholder={isUpload(m.path) ? 'Uploaded image (paste a URL to replace)' : '/media/... or https://...'} className={input} />
+        <label className="mt-2 inline-flex cursor-pointer items-center gap-1.5 text-xs font-semibold text-navy-600 hover:underline">
+          <Upload className="h-3.5 w-3.5" /> {m.path ? 'Replace with a file' : 'Choose a file'}
+          <input type="file" accept="image/*" hidden onChange={(e) => replaceFile(e.target.files?.[0])} />
+        </label>
+      </div>
+      <p className="text-[11px] leading-relaxed text-slate-500 md:col-span-2">Tip: tag images with <b>campus</b> or <b>students</b> to show them on Campus Life, and <b>placements</b> for the Placements page.</p>
+      {err && <p className="text-xs font-semibold text-rose-600 md:col-span-2">{err}</p>}
+    </FormShell>
   )
 }
 

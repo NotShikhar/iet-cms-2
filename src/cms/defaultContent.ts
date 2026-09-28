@@ -29,7 +29,7 @@ export const settings: SiteSettings = {
     'GDSC IET DAVV': 'https://gdsc.ietdavv.edu.in/',
     'iConnect': 'https://iconnect.ietdavv.edu.in/',
     'Forms Portal': 'https://forms.ietdavv.edu.in/',
-    'Alumni Network': 'https://ietdavvalumni.almaconnect.com/',
+    'Alumni Network': 'https://ietdavvalumni.com/',
     'Online Grievance': 'https://help.ietonline.in/',
     'Old Exam Papers (college email)': 'https://drive.google.com/drive/folders/1wgXXItjKajVHGKAtD3pBbAV6CZvfuuaN?usp=sharing',
   },
