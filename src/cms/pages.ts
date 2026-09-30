@@ -645,20 +645,6 @@ Students may also use the DAVV Central Library and the reading room facilities o
     ],
   },
   {
-    slug: 'tenders',
-    title: 'Tender Notifications',
-    eyebrow: 'Administration',
-    intro: 'Close tender enquiries published by the institute.',
-    source: M + 'tender',
-    sections: [
-      {
-        body: `- [Close tender enquiry-1 for SAE eBAJA competition 2026](https://ietdavv.edu.in/images/downloads/Tender/CTE_ebaja_2026_1.pdf)
-- [Close tender enquiry-2 for SAE eBAJA competition 2026](https://ietdavv.edu.in/images/downloads/Tender/CTE_ebaja_2026_2.pdf)
-- [Close tender enquiry for SAE-DDC-2024 competition](https://ietdavv.edu.in/images/downloads/Tender/Tender_30072024.pdf)`,
-      },
-    ],
-  },
-  {
     slug: 'project-documents',
     title: 'Project Documents (B.E. IV Year)',
     eyebrow: 'Academics',

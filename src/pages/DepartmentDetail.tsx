@@ -1,7 +1,10 @@
-import { ArrowLeft, BookOpen, Mail, UserRound } from 'lucide-react'
+import { ArrowLeft, BookOpen, Mail } from 'lucide-react'
 import { Link, Navigate, useParams } from 'react-router-dom'
+import { facultyFor } from '../cms/faculty'
 import { useCms } from '../cms/store'
 import { departments } from '../data/departments'
+import { FacultyCard, FacultyPhoto } from '../components/ui/FacultyCard'
+import { FacultyProfileModal, useOpenFacultyProfile } from '../components/ui/FacultyProfileModal'
 import { PageHero } from '../components/ui/PageHero'
 import { Reveal, Stagger, StaggerItem } from '../components/ui/Reveal'
 import { SectionHeader } from '../components/ui/SectionHeader'
@@ -10,11 +13,15 @@ export default function DepartmentDetail() {
   const { slug } = useParams()
   const d = departments.find((x) => x.slug === slug)
   const { content } = useCms()
+  const openProfile = useOpenFacultyProfile()
   if (!d) return <Navigate to="/departments" replace />
+  const faculty = facultyFor(content.faculty, d.slug)
+  const head = faculty.find((m) => m.headOf === d.slug)
   const related = content.news.filter((n) => n.tag.toLowerCase().includes(d.short.split(' ')[0].toLowerCase()) || n.tag.toLowerCase().includes(d.name.split(' ')[0].toLowerCase())).slice(0, 3)
 
   return (
     <>
+      <FacultyProfileModal />
       <PageHero eyebrow={`Department · ${d.code}`} title={d.name} description={d.tagline} crumbs={[{ label: 'Departments', href: '/departments' }, { label: d.short }]} image={d.image} />
 
       <section className="py-16">
@@ -43,16 +50,16 @@ export default function DepartmentDetail() {
               <div className="mt-6 flex flex-wrap gap-2">{d.focus.map((f) => <span key={f} className="chip">{f}</span>)}</div>
             </div>
 
-            {d.faculty && d.faculty.length > 0 && (
+            {faculty.length > 0 && (
               <div className="mt-14">
-                <SectionHeader eyebrow="Faculty" title="Faculty members" description="As listed in the IET-DAVV Institute Profile and official notices. The full faculty directory is maintained by the institute." />
-                <Stagger className="mt-6 grid gap-3 sm:grid-cols-2">
-                  {d.faculty.map((n) => (
-                    <StaggerItem key={n}>
-                      <div className="card flex items-center gap-3 p-4">
-                        <div className={`grid h-11 w-11 shrink-0 place-items-center rounded-full bg-gradient-to-br ${d.color} text-white`}><UserRound className="h-5 w-5" /></div>
-                        <p className="text-sm font-semibold text-ink">{n}</p>
-                      </div>
+                <div className="flex flex-wrap items-end justify-between gap-3">
+                  <SectionHeader eyebrow="Faculty" title={`Faculty members (${faculty.length})`} description="As published on the One IET faculty profile portal." />
+                  <Link to={`/faculty?dept=${d.slug}`} className="text-sm font-semibold text-navy-600 hover:underline">Open in faculty directory</Link>
+                </div>
+                <Stagger className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
+                  {faculty.map((m) => (
+                    <StaggerItem key={m.id} className="h-full">
+                      <FacultyCard m={m} onOpen={openProfile} />
                     </StaggerItem>
                   ))}
                 </Stagger>
@@ -80,9 +87,15 @@ export default function DepartmentDetail() {
             <Reveal>
               <div className={`rounded-3xl bg-gradient-to-br ${d.color} p-6 text-white shadow-lift`}>
                 <p className="text-xs font-semibold uppercase tracking-wider text-white/80">Head of Department</p>
-                <p className="font-display mt-1 text-xl font-bold">{d.hod ?? 'Office of the Head'}</p>
-                {d.hodDesignation && <p className="text-sm text-white/90">{d.hodDesignation}</p>}
-                <p className="mt-3 flex items-center gap-2 text-sm text-white/90"><Mail className="h-4 w-4" /> director@ietdavv.edu.in</p>
+                <div className="mt-2 flex items-center gap-3">
+                  {head && <FacultyPhoto m={head} className="h-14 w-14 shrink-0 rounded-full border-2 border-white/40 text-lg" />}
+                  <div className="min-w-0">
+                    <p className="font-display text-xl font-bold">{head?.name ?? d.hod ?? 'Office of the Head'}</p>
+                    <p className="text-sm text-white/90">{head?.designation ?? d.hodDesignation}</p>
+                  </div>
+                </div>
+                <a href={`mailto:${head?.email ?? 'director@ietdavv.edu.in'}`} className="mt-3 flex items-center gap-2 break-all text-sm text-white/90 hover:text-white"><Mail className="h-4 w-4 shrink-0" /> {head?.email ?? 'director@ietdavv.edu.in'}</a>
+                {head && <button onClick={() => openProfile(head.id)} className="mt-4 rounded-lg bg-white/15 px-3 py-1.5 text-sm font-semibold hover:bg-white/25">View full profile</button>}
               </div>
             </Reveal>
             <Reveal delay={0.05}>
@@ -92,6 +105,7 @@ export default function DepartmentDetail() {
                   <li><Link to="/page/syllabus" className="hover:text-navy-600">Schemes & Syllabus (CBCS)</Link></li>
                   <li><Link to="/page/class-time-table" className="hover:text-navy-600">Class Time Table</Link></li>
                   <li><Link to="/page/results" className="hover:text-navy-600">Results</Link></li>
+                  <li><Link to={`/faculty?dept=${d.slug}`} className="hover:text-navy-600">Faculty Directory</Link></li>
                   <li><Link to="/page/faculty-research" className="hover:text-navy-600">Faculty & Research</Link></li>
                   <li><Link to="/page/student-feedback" className="hover:text-navy-600">Student Feedback Reports</Link></li>
                 </ul>

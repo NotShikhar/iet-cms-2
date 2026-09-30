@@ -24,7 +24,7 @@ const menu: MenuItem[] = [
       { label: 'Administrative Officer', to: '/page/administrative-officer', desc: 'Dr. Paresh Atri' },
       { label: 'Committees & Cells', to: '/page/committees', desc: 'Statutory committees' },
       { label: 'Mandatory Disclosure & EOA', to: '/page/mandatory-disclosure', desc: 'AICTE documents' },
-      { label: 'Tenders', to: '/page/tenders', desc: 'Tender notifications' },
+      { label: 'Tenders', to: '/tenders', desc: 'Tender notifications' },
     ],
   },
   {
@@ -32,6 +32,7 @@ const menu: MenuItem[] = [
     to: '/academics',
     children: [
       { label: 'Programmes Offered', to: '/academics', desc: 'B.Tech, M.Tech, M.Sc., Ph.D.' },
+      { label: 'Faculty Directory', to: '/faculty', desc: 'Department-wise faculty' },
       { label: 'Academic Calendar', to: '/page/academic-calendar', desc: 'Institute & AICTE calendars' },
       { label: 'Class Time Table', to: '/page/class-time-table', desc: 'All branches & years' },
       { label: 'Schemes & Syllabus (CBCS)', to: '/page/syllabus', desc: 'B.Tech, B.Des, PTDC' },

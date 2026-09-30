@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
 import { defaultContent } from './defaultContent'
-import type { CmsContent, CmsPage, EventItem, MediaItem, NewsItem, Notice } from './types'
+import type { CmsContent, CmsPage, EventItem, FacultyMember, MediaItem, NewsItem, Notice, Tender } from './types'
 
 const KEY = 'ietdavv-cms-content-v1'
 
@@ -15,10 +15,15 @@ type Store = {
   deleteEvent: (id: string) => void
   upsertNews: (n: NewsItem) => void
   deleteNews: (id: string) => void
+  upsertTender: (t: Tender) => void
+  deleteTender: (id: string) => void
   upsertPage: (p: CmsPage) => void
   /** Insert a media item, or replace the one currently at `originalPath`. */
   upsertMedia: (m: MediaItem, originalPath?: string) => void
   deleteMedia: (path: string) => void
+  /** New members are added at the end of the list; existing ones are replaced in place. */
+  upsertFaculty: (m: FacultyMember) => void
+  deleteFaculty: (id: string) => void
   /** Set when the browser refused to save (usually localStorage quota exceeded). */
   saveError: string | null
 }
@@ -91,6 +96,8 @@ export function CmsProvider({ children }: { children: ReactNode }) {
       deleteEvent: (id) => update((c) => ({ ...c, events: c.events.filter((x) => x.id !== id) })),
       upsertNews: (n) => update((c) => ({ ...c, news: upsert(c.news, n) })),
       deleteNews: (id) => update((c) => ({ ...c, news: c.news.filter((x) => x.id !== id) })),
+      upsertTender: (t) => update((c) => ({ ...c, tenders: upsert(c.tenders, t) })),
+      deleteTender: (id) => update((c) => ({ ...c, tenders: c.tenders.filter((x) => x.id !== id) })),
       upsertPage: (p) =>
         update((c) => {
           const i = c.pages.findIndex((x) => x.slug === p.slug)
@@ -110,6 +117,17 @@ export function CmsProvider({ children }: { children: ReactNode }) {
           return { ...c, media, news }
         }),
       deleteMedia: (path) => update((c) => ({ ...c, media: c.media.filter((x) => x.path !== path) })),
+      upsertFaculty: (m) =>
+        update((c) => {
+          // a department has one Head: appointing a new one clears the flag on the previous Head
+          const others = m.headOf ? c.faculty.map((x) => (x.id !== m.id && x.headOf === m.headOf ? { ...x, headOf: undefined } : x)) : c.faculty
+          const i = others.findIndex((x) => x.id === m.id)
+          if (i === -1) return { ...c, faculty: [...others, m] }
+          const faculty = [...others]
+          faculty[i] = m
+          return { ...c, faculty }
+        }),
+      deleteFaculty: (id) => update((c) => ({ ...c, faculty: c.faculty.filter((x) => x.id !== id) })),
       saveError,
     }),
     [content, dirty, update, reset, saveError],
@@ -135,3 +153,14 @@ export function fmtDate(iso: string) {
 }
 
 export const uid = () => Math.random().toString(36).slice(2, 10)
+
+const today = () => {
+  const d = new Date()
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
+}
+
+/** Open until the end of its last date; tenders without a last date have no status. */
+export function tenderStatus(t: { lastDate?: string }): 'Open' | 'Closed' | null {
+  if (!t.lastDate) return null
+  return t.lastDate >= today() ? 'Open' : 'Closed'
+}

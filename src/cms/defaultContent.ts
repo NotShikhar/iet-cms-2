@@ -1,6 +1,7 @@
 import { generatedDocuments, generatedMedia, generatedNews, generatedNotices, generatedVideos } from './generated'
 import { pages } from './pages'
-import type { CmsContent, EventItem, SiteSettings } from './types'
+import { defaultFaculty } from './faculty'
+import type { CmsContent, EventItem, SiteSettings, Tender } from './types'
 
 export const settings: SiteSettings = {
   name: 'Institute of Engineering & Technology',
@@ -43,6 +44,13 @@ export const events: EventItem[] = [
   { id: 'ev-5', title: 'Invento – annual technical festival (GitHub presents)', date: '2026-10-13', time: '13–14 October', venue: 'IET-DAVV Campus', type: 'Festival', published: true },
 ]
 
+// Close tender enquiries from ietdavv.edu.in/index.php/tender (dates = when the PDFs were uploaded; no closing dates are published)
+export const tenders: Tender[] = [
+  { id: 'td-3', title: 'Close tender enquiry-2 for SAE eBAJA competition 2026', date: '2025-12-28', url: 'https://ietdavv.edu.in/images/downloads/Tender/CTE_ebaja_2026_2.pdf', published: true },
+  { id: 'td-2', title: 'Close tender enquiry-1 for SAE eBAJA competition 2026', date: '2025-12-28', url: 'https://ietdavv.edu.in/images/downloads/Tender/CTE_ebaja_2026_1.pdf', published: true },
+  { id: 'td-1', title: 'Close tender enquiry for SAE-DDC-2024 competition', date: '2024-07-31', url: 'https://ietdavv.edu.in/images/downloads/Tender/Tender_30072024.pdf', published: true },
+]
+
 export const defaultContent: CmsContent = {
   settings,
   notices: generatedNotices,
@@ -52,4 +60,6 @@ export const defaultContent: CmsContent = {
   documents: generatedDocuments,
   videos: generatedVideos,
   media: generatedMedia,
+  faculty: defaultFaculty,
+  tenders,
 }

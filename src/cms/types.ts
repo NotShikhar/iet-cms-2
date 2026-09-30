@@ -85,6 +85,36 @@ export type MediaItem = {
 
 export type Video = { id: string; title: string }
 
+export type Tender = {
+  id: string
+  title: string
+  /** Tender / enquiry reference number */
+  refNo?: string
+  /** Short description of the work or supply */
+  description?: string
+  /** Date published (YYYY-MM-DD) */
+  date: string
+  /** Last date for submission (YYYY-MM-DD); decides Open / Closed */
+  lastDate?: string
+  /** Tender document (PDF) link */
+  url?: string
+  published: boolean
+}
+
+export type FacultyMember = {
+  id: string
+  name: string
+  designation: string
+  /** Department slugs from src/data/departments.ts */
+  departments: string[]
+  /** Slug of the department this member heads, if any */
+  headOf?: string
+  /** Office held, e.g. "Director" or "In charge PhD Cell" — shown in the "Director & Heads" tab */
+  responsibility?: string
+  email?: string
+  photo?: string
+}
+
 export type PageSection = { heading?: string; body: string } // body = Markdown
 
 export type CmsPage = {
@@ -122,4 +152,6 @@ export type CmsContent = {
   documents: DocumentItem[]
   videos: Video[]
   media: MediaItem[]
+  faculty: FacultyMember[]
+  tenders: Tender[]
 }

@@ -37,7 +37,7 @@ const cols = [
       { label: 'Mandatory Disclosure & EOA', to: '/page/mandatory-disclosure' },
       { label: 'Anti-Ragging & Discipline', to: '/page/anti-ragging' },
       { label: 'Student Feedback', to: '/page/student-feedback' },
-      { label: 'Tenders', to: '/page/tenders' },
+      { label: 'Tenders', to: '/tenders' },
       { label: 'Admin Login (CMS)', to: '/admin' },
     ],
   },

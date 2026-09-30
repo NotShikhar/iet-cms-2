@@ -1,18 +1,22 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import { Bell, CalendarDays, Check, Eye, FileText, Image, LayoutDashboard, Link2, LogOut, Newspaper, Pencil, Plus, RotateCcw, Save, Settings, Trash2, Upload, Video, X } from 'lucide-react'
+import { Bell, CalendarDays, Check, Eye, FileText, Gavel, Image, LayoutDashboard, Link2, LogOut, Newspaper, Pencil, Plus, RotateCcw, Save, Settings, Trash2, Upload, Users, Video, X } from 'lucide-react'
 import { useMemo, useRef, useState, type ReactNode } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../cms/auth'
-import { fmtDate, uid, useCms } from '../cms/store'
-import type { CmsPage, EventItem, MediaItem, NewsItem, Notice, NoticeCategory } from '../cms/types'
+import { fmtDate, tenderStatus, uid, useCms } from '../cms/store'
+import type { CmsPage, EventItem, FacultyMember, MediaItem, NewsItem, Notice, NoticeCategory, Tender } from '../cms/types'
+import { departments } from '../data/departments'
+import { FacultyPhoto } from '../components/ui/FacultyCard'
 
-type Tab = 'Dashboard' | 'Notices' | 'Events' | 'News' | 'Pages' | 'Media' | 'Documents' | 'Videos' | 'Settings'
+type Tab = 'Dashboard' | 'Notices' | 'Tenders' | 'Events' | 'News' | 'Pages' | 'Faculty' | 'Media' | 'Documents' | 'Videos' | 'Settings'
 const nav: { i: typeof Bell; l: Tab }[] = [
   { i: LayoutDashboard, l: 'Dashboard' },
   { i: Bell, l: 'Notices' },
+  { i: Gavel, l: 'Tenders' },
   { i: CalendarDays, l: 'Events' },
   { i: Newspaper, l: 'News' },
   { i: FileText, l: 'Pages' },
+  { i: Users, l: 'Faculty' },
   { i: Image, l: 'Media' },
   { i: FileText, l: 'Documents' },
   { i: Video, l: 'Videos' },
@@ -25,6 +29,9 @@ const label = 'block text-xs font-semibold uppercase tracking-wider text-slate-5
 
 export default function AdminPage() {
   const [tab, setTab] = useState<Tab>('Dashboard')
+  // set by dashboard quick actions: open the tab with a blank "new" form
+  const [startNew, setStartNew] = useState(false)
+  const go = (t: Tab, create = false) => { setTab(t); setStartNew(create) }
   const { content, isDirty, reset } = useCms()
   const { user, signOut } = useAuth()
   const navigate = useNavigate()
@@ -63,7 +70,7 @@ export default function AdminPage() {
             <ul className="space-y-1">
               {nav.map((n) => (
                 <li key={n.l}>
-                  <button onClick={() => setTab(n.l)} className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition ${tab === n.l ? 'bg-navy-600 text-white shadow-soft' : 'text-slate-700 hover:bg-mist'}`}>
+                  <button onClick={() => go(n.l)} className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition ${tab === n.l ? 'bg-navy-600 text-white shadow-soft' : 'text-slate-700 hover:bg-mist'}`}>
                     <n.i className="h-4 w-4" />
                     {n.l}
                     <span className={`ml-auto rounded-md px-1.5 text-[11px] ${tab === n.l ? 'bg-white/20' : 'bg-mist text-slate-500'}`}>{countFor(n.l, content)}</span>
@@ -81,11 +88,13 @@ export default function AdminPage() {
           </aside>
 
           <div className="min-w-0 space-y-5 lg:col-span-9">
-            {tab === 'Dashboard' && <Dashboard go={setTab} />}
-            {tab === 'Notices' && <NoticesAdmin />}
-            {tab === 'Events' && <EventsAdmin />}
-            {tab === 'News' && <NewsAdmin />}
+            {tab === 'Dashboard' && <Dashboard go={go} />}
+            {tab === 'Notices' && <NoticesAdmin startNew={startNew} />}
+            {tab === 'Tenders' && <TendersAdmin startNew={startNew} />}
+            {tab === 'Events' && <EventsAdmin startNew={startNew} />}
+            {tab === 'News' && <NewsAdmin startNew={startNew} />}
             {tab === 'Pages' && <PagesAdmin />}
+            {tab === 'Faculty' && <FacultyAdmin />}
             {tab === 'Media' && <MediaAdmin />}
             {tab === 'Documents' && <DocumentsAdmin />}
             {tab === 'Videos' && <VideosAdmin />}
@@ -100,9 +109,11 @@ export default function AdminPage() {
 function countFor(t: Tab, c: ReturnType<typeof useCms>['content']) {
   switch (t) {
     case 'Notices': return c.notices.length
+    case 'Tenders': return c.tenders.length
     case 'Events': return c.events.length
     case 'News': return c.news.length
     case 'Pages': return c.pages.length
+    case 'Faculty': return c.faculty.length
     case 'Media': return c.media.length
     case 'Documents': return c.documents.length
     case 'Videos': return c.videos.length
@@ -122,7 +133,7 @@ function Panel({ title, action, children }: { title: string; action?: ReactNode;
   )
 }
 
-function Dashboard({ go }: { go: (t: Tab) => void }) {
+function Dashboard({ go }: { go: (t: Tab, create?: boolean) => void }) {
   const { content } = useCms()
   const stats = [
     ['Published notices', content.notices.filter((n) => n.published).length, 'Notices'],
@@ -154,8 +165,8 @@ function Dashboard({ go }: { go: (t: Tab) => void }) {
       <div className="grid gap-5 md:grid-cols-2">
         <Panel title="Quick actions">
           <div className="grid grid-cols-2 gap-2 p-4">
-            {(['Notices', 'Events', 'News', 'Pages'] as Tab[]).map((t) => (
-              <button key={t} onClick={() => go(t)} className="btn btn-secondary !py-2 text-xs"><Plus className="h-4 w-4" /> New {t.replace(/s$/, '').toLowerCase()}</button>
+            {([['Notices', 'notice'], ['Tenders', 'tender'], ['Events', 'event'], ['News', 'story']] as const).map(([t, what]) => (
+              <button key={t} onClick={() => go(t, true)} className="btn btn-secondary !py-2 text-xs"><Plus className="h-4 w-4" /> New {what}</button>
             ))}
           </div>
         </Panel>
@@ -173,12 +184,15 @@ function Dashboard({ go }: { go: (t: Tab) => void }) {
 }
 
 /* ---------- Notices ---------- */
-function NoticesAdmin() {
+function NoticesAdmin({ startNew = false }: { startNew?: boolean }) {
   const { content, upsertNotice, deleteNotice } = useCms()
-  const [editing, setEditing] = useState<Notice | null>(null)
+  const [editing, setEditing] = useState<Notice | null>(() => (startNew ? blank() : null))
   const [q, setQ] = useState('')
   const list = useMemo(() => content.notices.filter((n) => n.title.toLowerCase().includes(q.toLowerCase())), [content.notices, q])
-  const blank = (): Notice => ({ id: uid(), title: '', date: new Date().toISOString().slice(0, 10), category: 'General', url: '', isNew: true, published: true })
+  // hoisted so the initial state below can call it
+  function blank(): Notice {
+    return { id: uid(), title: '', date: new Date().toISOString().slice(0, 10), category: 'General', url: '', isNew: true, published: true }
+  }
 
   return (
     <Panel
@@ -253,11 +267,101 @@ function NoticeForm({ value, onSave, onCancel }: { value: Notice; onSave: (n: No
   )
 }
 
+/* ---------- Tenders ---------- */
+const statusBadge = { Open: 'bg-emerald-50 text-emerald-700', Closed: 'bg-slate-100 text-slate-600' }
+
+function TendersAdmin({ startNew = false }: { startNew?: boolean }) {
+  const { content, upsertTender, deleteTender } = useCms()
+  const [editing, setEditing] = useState<Tender | null>(() => (startNew ? blank() : null))
+  const [q, setQ] = useState('')
+  const list = content.tenders.filter((t) => `${t.title} ${t.refNo ?? ''}`.toLowerCase().includes(q.toLowerCase()))
+  // hoisted so the initial state above can call it
+  function blank(): Tender {
+    return { id: uid(), title: '', date: new Date().toISOString().slice(0, 10), lastDate: '', url: '', published: true }
+  }
+
+  return (
+    <Panel
+      title={`Tenders (${content.tenders.length})`}
+      action={
+        <div className="flex items-center gap-2">
+          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search" className={`${input} !h-9 w-44`} />
+          <button onClick={() => setEditing(blank())} className="btn btn-primary !px-3 !py-2 text-xs"><Plus className="h-4 w-4" /> New tender</button>
+        </div>
+      }
+    >
+      <AnimatePresence>{editing && <TenderForm key={editing.id} value={editing} onCancel={() => setEditing(null)} onSave={(t) => { upsertTender(t); setEditing(null) }} />}</AnimatePresence>
+      {list.length === 0 && <p className="p-8 text-center text-sm text-slate-500">No tenders yet. Use “New tender” to post one.</p>}
+      {list.length > 0 && (
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[760px] text-sm">
+            <thead className="bg-mist text-left text-xs font-semibold uppercase tracking-wider text-slate-500">
+              <tr><th className="px-5 py-3">Tender</th><th className="px-5 py-3">Published</th><th className="px-5 py-3">Last date</th><th className="px-5 py-3">Status</th><th className="px-5 py-3 text-right">Actions</th></tr>
+            </thead>
+            <tbody className="divide-y divide-line">
+              {list.map((t) => {
+                const status = tenderStatus(t)
+                return (
+                  <tr key={t.id} className="hover:bg-mist">
+                    <td className="max-w-md px-5 py-3">
+                      <span className="line-clamp-2 font-medium text-ink">{t.title}</span>
+                      {t.refNo && <span className="block text-xs text-slate-500">Ref. {t.refNo}</span>}
+                      {t.url && <a href={t.url} target="_blank" rel="noreferrer" className="block truncate text-xs text-navy-600 hover:underline">{t.url}</a>}
+                    </td>
+                    <td className="whitespace-nowrap px-5 py-3 text-slate-600">{fmtDate(t.date)}</td>
+                    <td className="whitespace-nowrap px-5 py-3 text-slate-600">{t.lastDate ? fmtDate(t.lastDate) : '—'}</td>
+                    <td className="px-5 py-3">
+                      <div className="flex flex-wrap gap-1">
+                        {status && <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${statusBadge[status]}`}>{status}</span>}
+                        <button onClick={() => upsertTender({ ...t, published: !t.published })} className={`rounded-full px-2 py-0.5 text-xs font-semibold ${t.published ? 'bg-navy-50 text-navy-700' : 'bg-saffron-100 text-saffron-600'}`}>{t.published ? 'Published' : 'Draft'}</button>
+                      </div>
+                    </td>
+                    <td className="whitespace-nowrap px-5 py-3 text-right">
+                      <button onClick={() => setEditing(t)} className="rounded-lg p-1.5 text-slate-500 hover:bg-navy-50 hover:text-navy-600" aria-label="Edit"><Pencil className="h-4 w-4" /></button>
+                      <button onClick={() => confirm('Delete this tender?') && deleteTender(t.id)} className="rounded-lg p-1.5 text-slate-500 hover:bg-rose-50 hover:text-rose-600" aria-label="Delete"><Trash2 className="h-4 w-4" /></button>
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </Panel>
+  )
+}
+
+function TenderForm({ value, onSave, onCancel }: { value: Tender; onSave: (t: Tender) => void; onCancel: () => void }) {
+  const [t, setT] = useState(value)
+  const [err, setErr] = useState('')
+  const save = () => {
+    if (!t.title.trim()) return setErr('Title is required.')
+    if (t.lastDate && t.lastDate < t.date) return setErr('Last date for submission cannot be before the publish date.')
+    onSave({ ...t, title: t.title.trim(), refNo: t.refNo?.trim() || undefined, description: t.description?.trim() || undefined, lastDate: t.lastDate || undefined, url: t.url?.trim() || undefined })
+  }
+  return (
+    <FormShell title={value.title ? 'Edit tender' : 'New tender'} onCancel={onCancel} onSave={save}>
+      <label className="md:col-span-2"><span className={label}>Title</span><input required value={t.title} onChange={(e) => setT({ ...t, title: e.target.value })} placeholder="e.g. Close tender enquiry for supply of lab equipment" className={input} /></label>
+      <label><span className={label}>Reference no. (optional)</span><input value={t.refNo ?? ''} onChange={(e) => setT({ ...t, refNo: e.target.value })} placeholder="IET/Purchase/2026/..." className={input} /></label>
+      <label><span className={label}>Tender document (PDF link)</span><input value={t.url ?? ''} onChange={(e) => setT({ ...t, url: e.target.value })} placeholder="https://ietdavv.edu.in/images/downloads/Tender/..." className={input} /></label>
+      <label><span className={label}>Published on</span><input type="date" value={t.date} onChange={(e) => setT({ ...t, date: e.target.value })} className={input} /></label>
+      <label><span className={label}>Last date for submission</span><input type="date" value={t.lastDate ?? ''} onChange={(e) => setT({ ...t, lastDate: e.target.value })} className={input} /></label>
+      <label className="md:col-span-2"><span className={label}>Description (optional)</span><textarea rows={2} value={t.description ?? ''} onChange={(e) => setT({ ...t, description: e.target.value })} placeholder="Scope of work / items to be supplied" className={`${input} h-auto py-2`} /></label>
+      <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={t.published} onChange={(e) => setT({ ...t, published: e.target.checked })} /> Published</label>
+      <p className="text-[11px] leading-relaxed text-slate-500">The public Tenders page marks a tender <b>Open</b> until its last date, then <b>Closed</b>.</p>
+      {err && <p className="text-xs font-semibold text-rose-600 md:col-span-2">{err}</p>}
+    </FormShell>
+  )
+}
+
 /* ---------- Events ---------- */
-function EventsAdmin() {
+function EventsAdmin({ startNew = false }: { startNew?: boolean }) {
   const { content, upsertEvent, deleteEvent } = useCms()
-  const [editing, setEditing] = useState<EventItem | null>(null)
-  const blank = (): EventItem => ({ id: uid(), title: '', date: new Date().toISOString().slice(0, 10), time: '', venue: '', type: 'Event', published: true })
+  const [editing, setEditing] = useState<EventItem | null>(() => (startNew ? blank() : null))
+  // hoisted so the initial state below can call it
+  function blank(): EventItem {
+    return { id: uid(), title: '', date: new Date().toISOString().slice(0, 10), time: '', venue: '', type: 'Event', published: true }
+  }
   return (
     <Panel title={`Events (${content.events.length})`} action={<button onClick={() => setEditing(blank())} className="btn btn-primary !px-3 !py-2 text-xs"><Plus className="h-4 w-4" /> New event</button>}>
       <AnimatePresence>
@@ -296,10 +400,13 @@ function EventForm({ value, onSave, onCancel }: { value: EventItem; onSave: (e: 
 }
 
 /* ---------- News ---------- */
-function NewsAdmin() {
+function NewsAdmin({ startNew = false }: { startNew?: boolean }) {
   const { content, upsertNews, deleteNews } = useCms()
-  const [editing, setEditing] = useState<NewsItem | null>(null)
-  const blank = (): NewsItem => ({ id: uid(), title: '', excerpt: '', date: new Date().toISOString().slice(0, 10), tag: 'News', image: '', published: true })
+  const [editing, setEditing] = useState<NewsItem | null>(() => (startNew ? blank() : null))
+  // hoisted so the initial state below can call it
+  function blank(): NewsItem {
+    return { id: uid(), title: '', excerpt: '', date: new Date().toISOString().slice(0, 10), tag: 'News', image: '', published: true }
+  }
   return (
     <Panel title={`News & achievements (${content.news.length})`} action={<button onClick={() => setEditing(blank())} className="btn btn-primary !px-3 !py-2 text-xs"><Plus className="h-4 w-4" /> New story</button>}>
       <AnimatePresence>
@@ -395,6 +502,122 @@ function PagesAdmin() {
         )}
       </div>
     </div>
+  )
+}
+
+/* ---------- Faculty ---------- */
+const DESIGNATIONS = ['Professor & Head', 'Professor', 'Associate Professor', 'Assistant Professor']
+const deptName = (slug: string) => departments.find((d) => d.slug === slug)?.short ?? slug
+
+function FacultyAdmin() {
+  const { content, upsertFaculty, deleteFaculty } = useCms()
+  const [editing, setEditing] = useState<FacultyMember | null>(null)
+  const [dept, setDept] = useState('all')
+  const [q, setQ] = useState('')
+  const list = content.faculty.filter(
+    (m) => (dept === 'all' || (dept === 'heads' ? !!m.responsibility : m.departments.includes(dept))) && m.name.toLowerCase().includes(q.toLowerCase()),
+  )
+  const blank = (): FacultyMember => ({ id: uid(), name: '', designation: 'Assistant Professor', departments: dept === 'all' || dept === 'heads' ? [] : [dept], email: '', photo: '' })
+
+  return (
+    <Panel
+      title={`Faculty (${content.faculty.length})`}
+      action={
+        <div className="flex flex-wrap items-center justify-end gap-2">
+          <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Search" className={`${input} !h-9 w-36`} />
+          <select value={dept} onChange={(e) => setDept(e.target.value)} className={`${input} !h-9 w-44`}>
+            <option value="all">All departments</option>
+            <option value="heads">Director &amp; Heads</option>
+            {departments.map((d) => <option key={d.slug} value={d.slug}>{d.name}</option>)}
+          </select>
+          <button onClick={() => setEditing(blank())} className="btn btn-primary !px-3 !py-2 text-xs"><Plus className="h-4 w-4" /> Add faculty</button>
+        </div>
+      }
+    >
+      <AnimatePresence>
+        {editing && <FacultyForm key={editing.id} value={editing} onCancel={() => setEditing(null)} onSave={(m) => { upsertFaculty(m); setEditing(null) }} />}
+      </AnimatePresence>
+      {list.length === 0 && <p className="p-8 text-center text-sm text-slate-500">No faculty members match.</p>}
+      <ul className="divide-y divide-line">
+        {list.map((m) => (
+          <li key={m.id} className="flex items-center gap-3 px-5 py-3 text-sm hover:bg-mist">
+            <FacultyPhoto m={m} className="h-11 w-11 shrink-0 rounded-full text-xs" />
+            <div className="min-w-0 flex-1">
+              <p className="truncate font-medium text-ink">{m.name}{m.headOf && <span className="ml-2 rounded bg-saffron-100 px-1.5 text-[10px] font-bold uppercase text-saffron-600">Head</span>}</p>
+              <p className="truncate text-xs text-slate-500">{m.designation} · {m.departments.map(deptName).join(', ') || 'No department'}</p>
+              {m.responsibility && <p className="truncate text-xs text-navy-600">{m.responsibility}</p>}
+            </div>
+            <button onClick={() => setEditing(m)} className="rounded-lg p-1.5 text-slate-500 hover:bg-navy-50 hover:text-navy-600" aria-label="Edit"><Pencil className="h-4 w-4" /></button>
+            <button onClick={() => confirm(`Remove ${m.name} from the faculty directory?`) && deleteFaculty(m.id)} className="rounded-lg p-1.5 text-slate-500 hover:bg-rose-50 hover:text-rose-600" aria-label="Delete"><Trash2 className="h-4 w-4" /></button>
+          </li>
+        ))}
+      </ul>
+    </Panel>
+  )
+}
+
+function FacultyForm({ value, onSave, onCancel }: { value: FacultyMember; onSave: (m: FacultyMember) => void; onCancel: () => void }) {
+  const [m, setM] = useState(value)
+  const [err, setErr] = useState('')
+  const toggleDept = (slug: string) => {
+    const has = m.departments.includes(slug)
+    const next = has ? m.departments.filter((s) => s !== slug) : [...m.departments, slug]
+    setM({ ...m, departments: next, headOf: m.headOf && next.includes(m.headOf) ? m.headOf : undefined })
+  }
+  const uploadPhoto = async (f: File | undefined) => {
+    if (!f) return
+    try {
+      const photo = await fileToDataUrl(f, 500)
+      setM((cur) => ({ ...cur, photo }))
+    } catch (e) {
+      setErr((e as Error).message)
+    }
+  }
+  const save = () => {
+    if (!m.name.trim()) return setErr('Name is required.')
+    if (m.departments.length === 0) return setErr('Choose at least one department.')
+    onSave({ ...m, name: m.name.trim(), email: m.email?.trim() || undefined, photo: m.photo?.trim() || undefined, responsibility: m.responsibility?.trim() || undefined })
+  }
+  return (
+    <FormShell title={value.name ? `Edit ${value.name}` : 'Add faculty member'} onCancel={onCancel} onSave={save}>
+      <div className="flex items-center gap-4 md:col-span-2">
+        <FacultyPhoto m={m} className="h-20 w-20 shrink-0 rounded-2xl text-xl" />
+        <div className="min-w-0 flex-1">
+          <span className={label}>Photo</span>
+          <input value={m.photo?.startsWith('data:') ? '' : m.photo ?? ''} onChange={(e) => setM({ ...m, photo: e.target.value })} placeholder={m.photo?.startsWith('data:') ? 'Uploaded photo (paste a URL to replace)' : 'https://... or /media/...'} className={input} />
+          <label className="mt-2 inline-flex cursor-pointer items-center gap-1.5 text-xs font-semibold text-navy-600 hover:underline">
+            <Upload className="h-3.5 w-3.5" /> Upload photo
+            <input type="file" accept="image/*" hidden onChange={(e) => uploadPhoto(e.target.files?.[0])} />
+          </label>
+          {m.photo && <button type="button" onClick={() => setM({ ...m, photo: '' })} className="ml-4 text-xs font-semibold text-rose-600 hover:underline">Remove photo</button>}
+        </div>
+      </div>
+      <label><span className={label}>Name</span><input required value={m.name} onChange={(e) => setM({ ...m, name: e.target.value })} placeholder="Dr Firstname Lastname" className={input} /></label>
+      <label><span className={label}>Designation</span>
+        <input list="faculty-designations" value={m.designation} onChange={(e) => setM({ ...m, designation: e.target.value })} className={input} />
+        <datalist id="faculty-designations">{DESIGNATIONS.map((d) => <option key={d} value={d} />)}</datalist>
+      </label>
+      <label><span className={label}>Email</span><input type="email" value={m.email ?? ''} onChange={(e) => setM({ ...m, email: e.target.value })} placeholder="name@ietdavv.edu.in" className={input} /></label>
+      <label><span className={label}>Responsibility (optional)</span><input value={m.responsibility ?? ''} onChange={(e) => setM({ ...m, responsibility: e.target.value })} placeholder="e.g. In charge PhD Cell" className={input} /></label>
+      <fieldset className="md:col-span-2">
+        <span className={label}>Departments</span>
+        <div className="grid gap-1.5 sm:grid-cols-2">
+          {departments.map((d) => (
+            <label key={d.slug} className="flex items-center gap-2 rounded-lg border border-line bg-white px-3 py-2 text-sm">
+              <input type="checkbox" checked={m.departments.includes(d.slug)} onChange={() => toggleDept(d.slug)} /> {d.name}
+            </label>
+          ))}
+        </div>
+      </fieldset>
+      <label><span className={label}>Head of department</span>
+        <select value={m.headOf ?? ''} onChange={(e) => setM({ ...m, headOf: e.target.value || undefined })} className={input}>
+          <option value="">— not a Head —</option>
+          {m.departments.map((s) => <option key={s} value={s}>{departments.find((d) => d.slug === s)?.name ?? s}</option>)}
+        </select>
+      </label>
+      <p className="self-end text-[11px] leading-relaxed text-slate-500">Members with a responsibility appear in the “Director &amp; Heads” tab of the public faculty directory.</p>
+      {err && <p className="text-xs font-semibold text-rose-600 md:col-span-2">{err}</p>}
+    </FormShell>
   )
 }
 

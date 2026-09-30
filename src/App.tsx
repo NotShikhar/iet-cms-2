@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import { AuthProvider } from './cms/auth'
 import { CmsProvider } from './cms/store'
 import { Layout } from './components/layout/Layout'
@@ -13,9 +13,11 @@ import CmsPageView from './pages/CmsPageView'
 import ContactPage from './pages/ContactPage'
 import DepartmentDetail from './pages/DepartmentDetail'
 import DepartmentsPage from './pages/DepartmentsPage'
+import FacultyPage from './pages/FacultyPage'
 import Home from './pages/Home'
 import NoticesPage from './pages/NoticesPage'
 import PlacementsPage from './pages/PlacementsPage'
+import TendersPage from './pages/TendersPage'
 
 export default function App() {
   return (
@@ -32,11 +34,14 @@ export default function App() {
               <Route path="/academics" element={<AcademicsPage />} />
               <Route path="/departments" element={<DepartmentsPage />} />
               <Route path="/departments/:slug" element={<DepartmentDetail />} />
+              <Route path="/faculty" element={<FacultyPage />} />
               <Route path="/admissions" element={<AdmissionsPage />} />
               <Route path="/placements" element={<PlacementsPage />} />
               <Route path="/campus-life" element={<CampusLifePage />} />
               <Route path="/notices" element={<NoticesPage />} />
               <Route path="/contact" element={<ContactPage />} />
+              <Route path="/tenders" element={<TendersPage />} />
+              <Route path="/page/tenders" element={<Navigate to="/tenders" replace />} />
               <Route path="/page/:slug" element={<CmsPageView />} />
               <Route
                 path="/admin"

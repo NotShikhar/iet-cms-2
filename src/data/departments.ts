@@ -13,7 +13,6 @@ export type Department = {
   focus: string[]
   color: string
   image: string
-  faculty?: string[]
 }
 
 export const departments: Department[] = [
@@ -31,7 +30,6 @@ export const departments: Department[] = [
     focus: ['Artificial Intelligence & Machine Learning', 'Data Science', 'Software Engineering', 'AI for Sustainability'],
     color: 'from-navy-500 to-navy-700',
     image: '/media/ietnew/PV03_S_31_2-scaled.jpg',
-    faculty: ['Dr. Vrinda Tokekar – Professor', 'Dr. G. L. Prajapati'],
   },
   {
     slug: 'information-technology',
@@ -46,7 +44,6 @@ export const departments: Department[] = [
     focus: ['Information Security', 'Digital Forensics', 'ERP & Knowledge Management', 'Green IT'],
     color: 'from-teal-500 to-teal-600',
     image: '/media/ietnew/PV02_S_8-1-scaled.jpg',
-    faculty: ['Dr. Pratosh Bansal – Professor & Director', 'Dr. Vrinda Tokekar – Professor', 'Dr. C. P. Patidar – Associate Professor'],
   },
   {
     slug: 'electronics-telecommunication',
@@ -59,7 +56,6 @@ export const departments: Department[] = [
     focus: ['Microelectronics & VLSI Design', 'Digital Communication', 'ASIC / SoC Design', 'Hardware Security'],
     color: 'from-violet-500 to-violet-700',
     image: '/media/ietnew/PV03_S_28_1.jpg',
-    faculty: ['Dr. Ravi Sindal – Professor & Dean, Faculty of Engineering', 'Dr. Vaibhav Neema', 'Dr. Raksha Upadhyay', 'Dr. Uma Bhatt'],
   },
   {
     slug: 'electronics-instrumentation',
@@ -75,7 +71,6 @@ export const departments: Department[] = [
     focus: ['IoT & Automation', 'Process Instrumentation', 'Embedded Systems', 'Biomedical Instrumentation'],
     color: 'from-sky-500 to-sky-700',
     image: '/media/ietnew/PV03_S_36_2-scaled.jpg',
-    faculty: ['Dr. Ajay Verma – Professor & Head'],
   },
   {
     slug: 'mechanical-engineering',
@@ -91,7 +86,6 @@ export const departments: Department[] = [
     focus: ['Design & Thermal Engineering', 'Automotive – SAE BAJA / eBAJA', 'Natural Fibre Composites', 'Thermal Energy Storage'],
     color: 'from-saffron-400 to-saffron-600',
     image: '/media/ietnew/PV03_S_54_2.jpg',
-    faculty: ['Dr. Ashesh Tiwari – Professor & Head', 'Dr. Govind Maheshwari – Professor & Prof. In-charge, Placements', 'Dr. Vijay Karma – Professor', 'Dr. Nagendra Sohani – Professor & Sr. Warden', 'Dr. Devendra Singh Verma – Professor', 'Dr. Sharad Choudhary'],
   },
   {
     slug: 'civil-engineering',
@@ -134,7 +128,6 @@ export const departments: Department[] = [
     focus: ['Applied Mathematics', 'Applied Physics', 'Applied Chemistry', 'Materials Science'],
     color: 'from-slate-500 to-slate-700',
     image: '/media/ietnew/PV03_S_67_2.jpg',
-    faculty: ['Dr. Shashi Prakash – Professor & Head', 'Dr. Ruchi Singh – Assistant Professor & Student Counsellor'],
   },
 ]
 
