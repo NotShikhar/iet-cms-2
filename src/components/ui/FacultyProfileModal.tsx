@@ -130,7 +130,7 @@ function ProfileBody({ m }: { m: FacultyMember }) {
                 b.type === 'table' ? (
                   <ProfileTable key={j} rows={b.rows} />
                 ) : (
-                  <p key={j} className="text-[17px] leading-relaxed text-slate-700" style={{ textAlign: b.align }}>{b.text}</p>
+                  <p key={j} className="text-[18px] leading-relaxed text-slate-700" style={{ textAlign: b.align }}>{b.text}</p>
                 ),
               )}
             </div>

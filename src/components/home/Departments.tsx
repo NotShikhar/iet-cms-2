@@ -16,7 +16,7 @@ export function Departments() {
         <Reveal className="max-w-2xl">
           <span className="eyebrow !text-saffron-300">Departments</span>
           <h2 className="font-display mt-3 text-[1.7rem] font-bold leading-tight tracking-tight sm:text-4xl lg:text-[2.6rem] lg:leading-[1.15]">Eight departments. More than 71 faculty members.</h2>
-          <p className="mt-3 text-[17px] text-navy-100/80 sm:mt-4 sm:text-lg">Engineering and science departments running B.Tech, M.Tech, M.Sc. and Ph.D. programmes.</p>
+          <p className="mt-3 text-[18px] text-navy-100/80 sm:mt-4 sm:text-lg">Engineering and science departments running B.Tech, M.Tech, M.Sc. and Ph.D. programmes.</p>
         </Reveal>
 
         <div className="mt-8 grid gap-5 sm:mt-12 lg:grid-cols-12 lg:gap-8">
@@ -27,9 +27,9 @@ export function Departments() {
                 <li key={dep.slug} className="shrink-0 snap-start lg:shrink lg:snap-align-none">
                   <button onMouseEnter={() => setActive(i)} onClick={() => setActive(i)} className={`group flex w-full items-center justify-between gap-3 rounded-xl px-3 py-2.5 text-left transition lg:px-4 lg:py-3 ${active === i ? 'bg-white/10' : 'hover:bg-white/5'}`}>
                     <span className="flex items-center gap-2 lg:gap-3">
-                      <span className={`grid h-8 w-11 shrink-0 place-items-center rounded-lg text-[13px] font-bold lg:h-9 lg:w-12 ${active === i ? 'bg-saffron-400 text-ink' : 'bg-white/10 text-navy-100'}`}>{dep.code}</span>
+                      <span className={`grid h-8 w-11 shrink-0 place-items-center rounded-lg text-[14px] font-bold lg:h-9 lg:w-12 ${active === i ? 'bg-saffron-400 text-ink' : 'bg-white/10 text-navy-100'}`}>{dep.code}</span>
                       <span className="hidden lg:block">
-                        <span className="block text-[17px] font-semibold">{dep.name}</span>
+                        <span className="block text-[18px] font-semibold">{dep.name}</span>
                         <span className="block text-xs text-navy-200/70">{dep.tagline}</span>
                       </span>
                     </span>
@@ -46,12 +46,12 @@ export function Departments() {
                 <img src={d.image} alt={d.name} className="h-full w-full object-cover" />
                 <div className={`absolute inset-0 bg-gradient-to-br ${d.color} opacity-60 mix-blend-multiply`} />
                 <div className="absolute bottom-4 left-4 right-4 sm:left-5 sm:right-5">
-                  <p className="text-[13px] uppercase tracking-widest text-white/80 sm:text-xs">{d.hod ? `${d.hod} · ${d.hodDesignation}` : 'Department'}</p>
+                  <p className="text-[14px] uppercase tracking-widest text-white/80 sm:text-xs">{d.hod ? `${d.hod} · ${d.hodDesignation}` : 'Department'}</p>
                   <h3 className="font-display text-lg font-bold leading-snug sm:text-2xl">{d.name}</h3>
                 </div>
               </div>
               <div className="p-5 sm:p-6">
-                <p className="text-[17px] text-navy-100/85 sm:text-base">{d.description}</p>
+                <p className="text-[18px] text-navy-100/85 sm:text-base">{d.description}</p>
                 <div className="mt-5 grid gap-5 sm:grid-cols-2">
                   <div>
                     <p className="text-xs font-semibold uppercase tracking-wider text-saffron-300">Programmes</p>

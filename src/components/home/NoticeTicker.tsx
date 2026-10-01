@@ -23,7 +23,7 @@ export function NoticeTicker() {
                 href={n.url || '#'}
                 target={n.url ? '_blank' : undefined}
                 rel="noreferrer"
-                className="flex shrink-0 items-center gap-2 text-[15px] text-slate-700 hover:text-navy-700 sm:text-sm"
+                className="flex shrink-0 items-center gap-2 text-[16px] text-slate-700 hover:text-navy-700 sm:text-sm"
               >
                 <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-navy-400" />
                 <span className="font-medium">{n.title}</span>

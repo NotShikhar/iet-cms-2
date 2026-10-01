@@ -68,7 +68,7 @@ export default function FacultyPage() {
                     className={`flex shrink-0 items-center gap-2 rounded-full border px-4 py-2 text-sm font-semibold transition ${tab === t.key ? 'border-navy-600 bg-navy-600 text-white' : 'border-line bg-white text-slate-700 hover:border-navy-300'}`}
                   >
                     {t.label}
-                    <span className={`rounded-full px-1.5 text-[13px] ${tab === t.key ? 'bg-white/20' : 'bg-mist text-slate-500'}`}>{t.count}</span>
+                    <span className={`rounded-full px-1.5 text-[14px] ${tab === t.key ? 'bg-white/20' : 'bg-mist text-slate-500'}`}>{t.count}</span>
                   </button>
                 ))}
               </div>

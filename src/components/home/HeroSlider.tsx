@@ -90,7 +90,7 @@ export function HeroSlider() {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.75, delay: 0.24 }}
-          className="mt-4 max-w-2xl text-[16.5px] leading-relaxed text-navy-100 sm:mt-6 sm:text-lg"
+          className="mt-4 max-w-2xl text-[17.5px] leading-relaxed text-navy-100 sm:mt-6 sm:text-lg"
         >
           One of Central India’s leading engineering institutes — an autonomous, AICTE-approved and UGC-recognised institution offering B.Tech, M.Tech, M.Sc. and Ph.D. programmes under the NAAC A+ accredited DAVV.
         </motion.p>
@@ -101,15 +101,15 @@ export function HeroSlider() {
           transition={{ duration: 0.75, delay: 0.32 }}
           className="mt-6 grid grid-cols-1 gap-2.5 sm:mt-9 sm:flex sm:flex-wrap sm:items-center sm:gap-3"
         >
-          <Link to="/admissions" className="btn btn-accent w-full !py-3.5 text-[17px] sm:w-auto sm:!px-7 sm:!py-4 sm:text-base">
+          <Link to="/admissions" className="btn btn-accent w-full !py-3.5 text-[18px] sm:w-auto sm:!px-7 sm:!py-4 sm:text-base">
             Admission 2026-27 <ArrowRight className="h-4 w-4" />
           </Link>
           <div className="grid grid-cols-2 gap-2.5 sm:contents">
-            <Link to="/departments" className="btn w-full border border-white/25 bg-white/10 !px-3 !py-3.5 text-[17px] text-white backdrop-blur-sm hover:bg-white/20 sm:w-auto sm:!px-5 sm:!py-4 sm:text-base">
+            <Link to="/departments" className="btn w-full border border-white/25 bg-white/10 !px-3 !py-3.5 text-[18px] text-white backdrop-blur-sm hover:bg-white/20 sm:w-auto sm:!px-5 sm:!py-4 sm:text-base">
               <span className="sm:hidden">Departments</span>
               <span className="hidden sm:inline">Explore departments</span>
             </Link>
-            <a href={s.social.youtube} target="_blank" rel="noreferrer" className="btn w-full border border-white/25 !px-3 !py-3.5 text-[17px] text-white hover:bg-white/10 sm:w-auto sm:border-0 sm:!px-5 sm:!py-4 sm:text-base">
+            <a href={s.social.youtube} target="_blank" rel="noreferrer" className="btn w-full border border-white/25 !px-3 !py-3.5 text-[18px] text-white hover:bg-white/10 sm:w-auto sm:border-0 sm:!px-5 sm:!py-4 sm:text-base">
               <PlayCircle className="h-5 w-5 shrink-0 text-saffron-300" /> Live@IET
             </a>
           </div>

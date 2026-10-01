@@ -110,7 +110,7 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-50">
-      <div className="hidden bg-navy-900 text-[15px] text-navy-100 lg:block">
+      <div className="hidden bg-navy-900 text-[16px] text-navy-100 lg:block">
         <div className="container-x flex h-9 items-center justify-between">
           <div className="flex items-center gap-5">
             <span className="flex items-center gap-1.5"><Phone className="h-3.5 w-3.5 text-saffron-300" />{s.phones.join(' / ')}</span>
@@ -131,11 +131,11 @@ export function Navbar() {
           <Link to="/" className="flex min-w-0 flex-1 items-center gap-2.5 sm:gap-3 xl:flex-none xl:shrink-0">
             <img src="/media/ietnew/iet_logo-300x300.png" alt="IET DAVV" className="h-9 w-9 shrink-0 rounded-xl object-contain sm:h-11 sm:w-11" />
             <div className="min-w-0 leading-tight">
-              <div className="font-display truncate text-[16px] font-bold tracking-tight text-ink sm:text-base xl:whitespace-nowrap xl:text-[17px] 2xl:text-base">
+              <div className="font-display truncate text-[17px] font-bold tracking-tight text-ink sm:text-base xl:whitespace-nowrap xl:text-[18px] 2xl:text-base">
                 <span className="sm:hidden">IET DAVV Indore</span>
                 <span className="hidden sm:inline">{s.name}</span>
               </div>
-              <div className="truncate text-[13px] font-medium text-slate-500 sm:text-xs xl:whitespace-nowrap">
+              <div className="truncate text-[14px] font-medium text-slate-500 sm:text-xs xl:whitespace-nowrap">
                 <span className="sm:hidden">{s.name}</span>
                 <span className="hidden sm:inline">{s.university}</span>
               </div>
@@ -148,7 +148,7 @@ export function Navbar() {
                 <NavLink
                   to={item.to}
                   end={item.to === '/'}
-                  className={({ isActive }) => `flex items-center gap-1 whitespace-nowrap rounded-lg px-1.5 py-2 text-[15px] font-semibold 2xl:px-2.5 transition-colors ${isActive ? 'text-navy-600' : 'text-slate-700 hover:text-navy-600'}`}
+                  className={({ isActive }) => `flex items-center gap-1 whitespace-nowrap rounded-lg px-1.5 py-2 text-[16px] font-semibold 2xl:px-2.5 transition-colors ${isActive ? 'text-navy-600' : 'text-slate-700 hover:text-navy-600'}`}
                 >
                   {item.label}
                   {item.children && <ChevronDown className={`h-3.5 w-3.5 transition-transform ${active === item.label ? 'rotate-180' : ''}`} />}
@@ -256,13 +256,13 @@ function MobileItem({ item }: { item: MenuItem }) {
   const [exp, setExp] = useState(false)
   if (!item.children)
     return (
-      <NavLink to={item.to} end={item.to === '/'} className={({ isActive }) => `block rounded-lg px-3 py-2.5 text-[17px] font-semibold ${isActive ? 'bg-navy-50 text-navy-700' : 'text-slate-800'}`}>
+      <NavLink to={item.to} end={item.to === '/'} className={({ isActive }) => `block rounded-lg px-3 py-2.5 text-[18px] font-semibold ${isActive ? 'bg-navy-50 text-navy-700' : 'text-slate-800'}`}>
         {item.label}
       </NavLink>
     )
   return (
     <div>
-      <button onClick={() => setExp(!exp)} className="flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-[17px] font-semibold text-slate-800">
+      <button onClick={() => setExp(!exp)} className="flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-[18px] font-semibold text-slate-800">
         {item.label}
         <ChevronDown className={`h-4 w-4 transition-transform ${exp ? 'rotate-180' : ''}`} />
       </button>

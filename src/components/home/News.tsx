@@ -24,7 +24,7 @@ export function News() {
               {lead.image && <img src={lead.image} alt={lead.title} className="absolute inset-0 h-full w-full object-cover" />}
               <div className="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-950/40 to-transparent" />
               <div className="absolute bottom-0 p-5 text-white sm:p-7">
-                <span className="rounded-md bg-saffron-400 px-2 py-0.5 text-[13px] font-bold uppercase text-ink">{lead.tag}</span>
+                <span className="rounded-md bg-saffron-400 px-2 py-0.5 text-[14px] font-bold uppercase text-ink">{lead.tag}</span>
                 <h3 className="font-display mt-3 text-xl font-bold leading-snug sm:text-2xl">{lead.title}</h3>
                 <p className="mt-2 line-clamp-2 text-sm text-navy-100/80">{lead.excerpt}</p>
                 <p className="mt-3 text-xs text-navy-200">{fmtDate(lead.date)}</p>
@@ -42,8 +42,8 @@ export function News() {
                       <span className="text-slate-400">·</span>
                       <span className="text-slate-500">{fmtDate(n.date)}</span>
                     </div>
-                    <h3 className="font-display mt-1 line-clamp-2 text-[17px] font-bold leading-snug text-ink group-hover:text-navy-700 sm:mt-1.5 sm:text-base">{n.title}</h3>
-                    <p className="mt-1 line-clamp-2 text-[15px] text-slate-600 sm:mt-1.5 sm:text-sm">{n.excerpt}</p>
+                    <h3 className="font-display mt-1 line-clamp-2 text-[18px] font-bold leading-snug text-ink group-hover:text-navy-700 sm:mt-1.5 sm:text-base">{n.title}</h3>
+                    <p className="mt-1 line-clamp-2 text-[16px] text-slate-600 sm:mt-1.5 sm:text-sm">{n.excerpt}</p>
                   </div>
                 </a>
               </StaggerItem>
@@ -74,7 +74,7 @@ export function News() {
               <div>
                 <span className="eyebrow">ACIIE · Innovation & Incubation</span>
                 <h3 className="font-display mt-3 text-[1.45rem] font-bold leading-tight text-ink sm:text-3xl">Atal Centre for Innovation, Incubation & Entrepreneurship</h3>
-                <p className="mt-3 text-[17px] text-slate-600 sm:text-base">ACIIE hosts the Institute’s Innovation Council and the student-run E-Cell, and invites innovative project proposals from students for incubation support.</p>
+                <p className="mt-3 text-[18px] text-slate-600 sm:text-base">ACIIE hosts the Institute’s Innovation Council and the student-run E-Cell, and invites innovative project proposals from students for incubation support.</p>
                 <Link to="/page/aciie" className="btn btn-primary mt-6 w-full sm:w-auto">About ACIIE <ArrowRight className="h-4 w-4" /></Link>
               </div>
               <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-3 sm:gap-3">
