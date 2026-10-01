@@ -72,7 +72,7 @@ export function HeroSlider() {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.75, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
-          className="font-display mt-5 max-w-4xl text-[2rem] font-extrabold leading-[1.06] tracking-tight text-white min-[400px]:text-[2.35rem] sm:mt-6 sm:text-6xl sm:leading-[1.02] lg:text-[4.25rem]"
+          className="font-display mt-5 max-w-4xl text-[2rem] font-bold leading-[1.06] tracking-tight text-white min-[400px]:text-[2.35rem] sm:mt-6 sm:text-6xl sm:leading-[1.02] lg:text-[4.25rem]"
         >
           Institute of Engineering &amp; Technology
         </motion.h1>
@@ -124,7 +124,7 @@ export function HeroSlider() {
         >
           {figures.map((f) => (
             <div key={f.label}>
-              <dt className="font-display text-xl font-extrabold text-white sm:text-3xl">{f.value}</dt>
+              <dt className="font-display text-xl font-bold text-white sm:text-3xl">{f.value}</dt>
               <dd className="mt-1 text-xs font-medium leading-snug text-navy-200 sm:text-sm">{f.label}</dd>
             </div>
           ))}
