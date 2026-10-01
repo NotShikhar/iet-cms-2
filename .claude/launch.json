@@ -6,6 +6,12 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev", "--", "--port", "5173", "--strictPort"],
       "port": 5173
+    },
+    {
+      "name": "iet-cms-dev-copy",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "C:\\dev\\iet-cms-2", "run", "dev", "--", "--port", "5174", "--strictPort"],
+      "port": 5174
     }
   ]
 }
