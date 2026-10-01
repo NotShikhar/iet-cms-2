@@ -41,7 +41,7 @@ export default function NoticesPage() {
                       <div className="min-w-0 flex-1">
                         <div className="flex flex-wrap items-center gap-2 text-xs">
                           <span className={`rounded-md px-2 py-0.5 font-semibold ${catColor[n.category] ?? catColor.General}`}>{n.category}</span>
-                          {n.isNew && <span className="rounded-md bg-saffron-400 px-1.5 py-0.5 text-[10px] font-bold uppercase text-ink">New</span>}
+                          {n.isNew && <span className="rounded-md bg-saffron-400 px-1.5 py-0.5 text-[12px] font-bold uppercase text-ink">New</span>}
                           <span className="text-slate-500">{fmtDate(n.date)}</span>
                         </div>
                         <p className="mt-1.5 font-semibold text-ink">{n.title}</p>
@@ -62,7 +62,7 @@ export default function NoticesPage() {
               {news.map((n) => (
                 <a key={n.id} href={n.url} target="_blank" rel="noreferrer" className="card card-hover flex gap-3 p-3">
                   {n.image ? <img src={n.image} alt="" loading="lazy" className="h-16 w-20 shrink-0 rounded-lg object-cover" /> : <div className="h-16 w-20 shrink-0 rounded-lg bg-navy-50" />}
-                  <div className="min-w-0"><p className="text-[11px] font-semibold text-navy-600">{n.tag} · {fmtDate(n.date)}</p><p className="line-clamp-2 text-sm font-semibold text-ink">{n.title}</p></div>
+                  <div className="min-w-0"><p className="text-[13px] font-semibold text-navy-600">{n.tag} · {fmtDate(n.date)}</p><p className="line-clamp-2 text-sm font-semibold text-ink">{n.title}</p></div>
                 </a>
               ))}
             </div>

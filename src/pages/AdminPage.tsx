@@ -73,12 +73,12 @@ export default function AdminPage() {
                   <button onClick={() => go(n.l)} className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition ${tab === n.l ? 'bg-navy-600 text-white shadow-soft' : 'text-slate-700 hover:bg-mist'}`}>
                     <n.i className="h-4 w-4" />
                     {n.l}
-                    <span className={`ml-auto rounded-md px-1.5 text-[11px] ${tab === n.l ? 'bg-white/20' : 'bg-mist text-slate-500'}`}>{countFor(n.l, content)}</span>
+                    <span className={`ml-auto rounded-md px-1.5 text-[13px] ${tab === n.l ? 'bg-white/20' : 'bg-mist text-slate-500'}`}>{countFor(n.l, content)}</span>
                   </button>
                 </li>
               ))}
             </ul>
-            <p className="mt-4 px-3 text-[11px] leading-relaxed text-slate-400">Prototype: edits are saved in this browser (localStorage). A production deployment would connect these screens to the institute's database and authentication.</p>
+            <p className="mt-4 px-3 text-[13px] leading-relaxed text-slate-400">Prototype: edits are saved in this browser (localStorage). A production deployment would connect these screens to the institute's database and authentication.</p>
             <button
               onClick={() => { signOut(); navigate('/admin/login', { replace: true }) }}
               className="mt-2 flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-rose-600 hover:bg-rose-50"
@@ -348,7 +348,7 @@ function TenderForm({ value, onSave, onCancel }: { value: Tender; onSave: (t: Te
       <label><span className={label}>Last date for submission</span><input type="date" value={t.lastDate ?? ''} onChange={(e) => setT({ ...t, lastDate: e.target.value })} className={input} /></label>
       <label className="md:col-span-2"><span className={label}>Description (optional)</span><textarea rows={2} value={t.description ?? ''} onChange={(e) => setT({ ...t, description: e.target.value })} placeholder="Scope of work / items to be supplied" className={`${input} h-auto py-2`} /></label>
       <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={t.published} onChange={(e) => setT({ ...t, published: e.target.checked })} /> Published</label>
-      <p className="text-[11px] leading-relaxed text-slate-500">The public Tenders page marks a tender <b>Open</b> until its last date, then <b>Closed</b>.</p>
+      <p className="text-[13px] leading-relaxed text-slate-500">The public Tenders page marks a tender <b>Open</b> until its last date, then <b>Closed</b>.</p>
       {err && <p className="text-xs font-semibold text-rose-600 md:col-span-2">{err}</p>}
     </FormShell>
   )
@@ -372,7 +372,7 @@ function EventsAdmin({ startNew = false }: { startNew?: boolean }) {
       <ul className="divide-y divide-line">
         {content.events.map((e) => (
           <li key={e.id} className="flex items-center gap-4 px-5 py-3 text-sm hover:bg-mist">
-            <div className="flex h-12 w-12 shrink-0 flex-col items-center justify-center rounded-lg bg-navy-600 text-white"><span className="font-display text-lg font-bold leading-none">{new Date(e.date).getDate() || '—'}</span><span className="text-[10px] uppercase">{new Date(e.date).toLocaleString('en', { month: 'short' })}</span></div>
+            <div className="flex h-12 w-12 shrink-0 flex-col items-center justify-center rounded-lg bg-navy-600 text-white"><span className="font-display text-lg font-bold leading-none">{new Date(e.date).getDate() || '—'}</span><span className="text-[12px] uppercase">{new Date(e.date).toLocaleString('en', { month: 'short' })}</span></div>
             <div className="min-w-0 flex-1"><p className="font-medium text-ink">{e.title}</p><p className="text-xs text-slate-500">{e.type} · {e.time} · {e.venue}</p></div>
             <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${e.published ? 'bg-emerald-50 text-emerald-700' : 'bg-saffron-100 text-saffron-600'}`}>{e.published ? 'Published' : 'Draft'}</span>
             <button onClick={() => setEditing(e)} className="rounded-lg p-1.5 text-slate-500 hover:bg-navy-50 hover:text-navy-600"><Pencil className="h-4 w-4" /></button>
@@ -468,7 +468,7 @@ function PagesAdmin() {
             <li key={p.slug}>
               <button onClick={() => { setSlug(p.slug); setDraft(null) }} className={`w-full rounded-lg px-3 py-2 text-left text-sm ${slug === p.slug ? 'bg-navy-600 font-semibold text-white' : 'text-slate-700 hover:bg-mist'}`}>
                 {p.title}
-                <span className={`block truncate text-[11px] ${slug === p.slug ? 'text-navy-100' : 'text-slate-400'}`}>/{p.slug}</span>
+                <span className={`block truncate text-[13px] ${slug === p.slug ? 'text-navy-100' : 'text-slate-400'}`}>/{p.slug}</span>
               </button>
             </li>
           ))}
@@ -543,7 +543,7 @@ function FacultyAdmin() {
           <li key={m.id} className="flex items-center gap-3 px-5 py-3 text-sm hover:bg-mist">
             <FacultyPhoto m={m} className="h-11 w-11 shrink-0 rounded-full text-xs" />
             <div className="min-w-0 flex-1">
-              <p className="truncate font-medium text-ink">{m.name}{m.headOf && <span className="ml-2 rounded bg-saffron-100 px-1.5 text-[10px] font-bold uppercase text-saffron-600">Head</span>}</p>
+              <p className="truncate font-medium text-ink">{m.name}{m.headOf && <span className="ml-2 rounded bg-saffron-100 px-1.5 text-[12px] font-bold uppercase text-saffron-600">Head</span>}</p>
               <p className="truncate text-xs text-slate-500">{m.designation} · {m.departments.map(deptName).join(', ') || 'No department'}</p>
               {m.responsibility && <p className="truncate text-xs text-navy-600">{m.responsibility}</p>}
             </div>
@@ -615,7 +615,7 @@ function FacultyForm({ value, onSave, onCancel }: { value: FacultyMember; onSave
           {m.departments.map((s) => <option key={s} value={s}>{departments.find((d) => d.slug === s)?.name ?? s}</option>)}
         </select>
       </label>
-      <p className="self-end text-[11px] leading-relaxed text-slate-500">Members with a responsibility appear in the “Director &amp; Heads” tab of the public faculty directory.</p>
+      <p className="self-end text-[13px] leading-relaxed text-slate-500">Members with a responsibility appear in the “Director &amp; Heads” tab of the public faculty directory.</p>
       {err && <p className="text-xs font-semibold text-rose-600 md:col-span-2">{err}</p>}
     </FormShell>
   )
@@ -711,10 +711,10 @@ function MediaAdmin() {
             </div>
             <figcaption className="p-2">
               <p className="truncate text-xs font-semibold text-ink">{m.alt || <span className="italic text-slate-400">Untitled</span>}</p>
-              <p className="truncate text-[11px] text-slate-400">{displayPath(m.path)}</p>
+              <p className="truncate text-[13px] text-slate-400">{displayPath(m.path)}</p>
               {m.tags.length > 0 && (
                 <div className="mt-1 flex flex-wrap gap-1">
-                  {m.tags.map((t) => <span key={t} className="rounded bg-navy-50 px-1.5 text-[10px] font-semibold text-navy-700">{t}</span>)}
+                  {m.tags.map((t) => <span key={t} className="rounded bg-navy-50 px-1.5 text-[12px] font-semibold text-navy-700">{t}</span>)}
                 </div>
               )}
             </figcaption>
@@ -760,7 +760,7 @@ function MediaForm({ value, isNew, taken, onSave, onCancel }: { value: MediaItem
           <input type="file" accept="image/*" hidden onChange={(e) => replaceFile(e.target.files?.[0])} />
         </label>
       </div>
-      <p className="text-[11px] leading-relaxed text-slate-500 md:col-span-2">Tip: tag images with <b>campus</b> or <b>students</b> to show them on Campus Life, and <b>placements</b> for the Placements page.</p>
+      <p className="text-[13px] leading-relaxed text-slate-500 md:col-span-2">Tip: tag images with <b>campus</b> or <b>students</b> to show them on Campus Life, and <b>placements</b> for the Placements page.</p>
       {err && <p className="text-xs font-semibold text-rose-600 md:col-span-2">{err}</p>}
     </FormShell>
   )

@@ -25,7 +25,7 @@ export function QuickLinks() {
                 <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-lg transition-colors duration-300 group-hover:text-white sm:h-11 sm:w-11 sm:rounded-xl ${tones[q.tone]}`}>
                   <Icon name={q.icon} className="h-4.5 w-4.5 sm:h-5 sm:w-5" />
                 </span>
-                <span className="min-w-0 text-[12.5px] font-semibold leading-tight text-slate-700 group-hover:text-ink sm:text-[13px]">{q.label}</span>
+                <span className="min-w-0 text-[14.5px] font-semibold leading-tight text-slate-700 group-hover:text-ink sm:text-[15px]">{q.label}</span>
               </SmartLink>
             </StaggerItem>
           ))}

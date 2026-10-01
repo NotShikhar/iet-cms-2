@@ -54,7 +54,7 @@ export function Footer() {
           <div>
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-saffron-300">Admission 2026-27</p>
             <h3 className="font-display mt-2 text-xl font-bold leading-snug text-white sm:text-2xl lg:text-3xl">Nine B.Tech programmes. Seven M.Tech specialisations. One campus in Indore.</h3>
-            <p className="mt-2 max-w-xl text-[15px] text-navy-100/80 sm:text-base">Admissions through JEE (Main) and DTE Madhya Pradesh counselling. College Level Counselling for vacant seats as notified by DTE.</p>
+            <p className="mt-2 max-w-xl text-[17px] text-navy-100/80 sm:text-base">Admissions through JEE (Main) and DTE Madhya Pradesh counselling. College Level Counselling for vacant seats as notified by DTE.</p>
           </div>
           <div className="mt-6 grid grid-cols-1 gap-2.5 sm:flex sm:flex-wrap sm:gap-3 lg:mt-0 lg:shrink-0">
             <Link to="/admissions" className="btn btn-accent w-full sm:w-auto">Admission information <ArrowUpRight className="h-4 w-4" /></Link>
@@ -69,7 +69,7 @@ export function Footer() {
             <img src="/media/ietnew/iet_logo-300x300.png" alt="IET DAVV" className="h-10 w-10 shrink-0 rounded-xl bg-white object-contain p-0.5 sm:h-11 sm:w-11" />
             <img src={s.universityLogo} alt="Devi Ahilya Vishwavidyalaya" className="h-10 w-10 shrink-0 rounded-xl bg-white object-contain p-0.5 sm:h-11 sm:w-11" />
             <div className="min-w-0">
-              <div className="font-display text-[15px] font-bold leading-snug text-white sm:text-base">{s.name}</div>
+              <div className="font-display text-[17px] font-bold leading-snug text-white sm:text-base">{s.name}</div>
               <div className="text-xs text-navy-200">{s.university}</div>
             </div>
           </div>

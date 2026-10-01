@@ -10,7 +10,7 @@ function Tile({ r }: { r: Recruiter }) {
       {r.logo ? (
         <img src={r.logo} alt={r.name} loading="lazy" className="max-h-12 w-auto max-w-[165px] object-contain" />
       ) : (
-        <span className="font-display text-center text-[15px] font-bold leading-tight tracking-tight text-navy-800 sm:text-base">
+        <span className="font-display text-center text-[17px] font-bold leading-tight tracking-tight text-navy-800 sm:text-base">
           {r.name}
         </span>
       )}

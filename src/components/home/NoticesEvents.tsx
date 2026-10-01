@@ -39,8 +39,8 @@ export function NoticesEvents() {
                       <div className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-navy-50 text-navy-600 sm:h-10 sm:w-10"><FileText className="h-4 w-4" /></div>
                       <div className="min-w-0 flex-1">
                         <div className="flex flex-wrap items-center gap-2">
-                          <span className={`rounded-md px-2 py-0.5 text-[11px] font-semibold ${catColor[n.category] ?? catColor.General}`}>{n.category}</span>
-                          {n.isNew && <span className="rounded-md bg-saffron-400 px-1.5 py-0.5 text-[10px] font-bold uppercase text-ink">New</span>}
+                          <span className={`rounded-md px-2 py-0.5 text-[13px] font-semibold ${catColor[n.category] ?? catColor.General}`}>{n.category}</span>
+                          {n.isNew && <span className="rounded-md bg-saffron-400 px-1.5 py-0.5 text-[12px] font-bold uppercase text-ink">New</span>}
                           <span className="text-xs text-slate-500">{fmtDate(n.date)}</span>
                         </div>
                         <p className="mt-1 text-sm font-medium text-slate-800 group-hover:text-navy-700">{n.title}</p>
@@ -65,10 +65,10 @@ export function NoticesEvents() {
                     <li key={e.id} className="group flex gap-3 px-4 py-3.5 transition hover:bg-mist sm:gap-4 sm:px-6 sm:py-4">
                       <div className="flex h-12 w-12 shrink-0 flex-col items-center justify-center rounded-xl bg-navy-600 text-white sm:h-14 sm:w-14">
                         <span className="font-display text-xl font-bold leading-none">{d.getDate()}</span>
-                        <span className="text-[11px] font-medium uppercase">{d.toLocaleString('en', { month: 'short' })}</span>
+                        <span className="text-[13px] font-medium uppercase">{d.toLocaleString('en', { month: 'short' })}</span>
                       </div>
                       <div className="min-w-0">
-                        <span className="text-[11px] font-semibold uppercase tracking-wider text-teal-600">{e.type}</span>
+                        <span className="text-[13px] font-semibold uppercase tracking-wider text-teal-600">{e.type}</span>
                         <p className="text-sm font-semibold text-ink">{e.url ? <a href={e.url} target="_blank" rel="noreferrer" className="hover:text-navy-700">{e.title}</a> : e.title}</p>
                         <p className="mt-1 flex flex-wrap gap-x-3 text-xs text-slate-500">
                           {e.time && <span className="flex items-center gap-1"><Clock className="h-3 w-3" />{e.time}</span>}

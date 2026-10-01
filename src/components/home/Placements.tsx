@@ -18,7 +18,7 @@ export function Placements() {
               {placementStats.map((s) => (
                 <div key={s.label} className="card p-4 sm:p-5">
                   <p className="font-display text-2xl font-extrabold text-navy-700 sm:text-3xl"><Counter value={s.value} suffix={s.suffix} decimals={s.decimals ?? 0} /></p>
-                  <p className="mt-1 text-[13px] leading-snug text-slate-500 sm:text-sm">{s.label}</p>
+                  <p className="mt-1 text-[15px] leading-snug text-slate-500 sm:text-sm">{s.label}</p>
                 </div>
               ))}
             </Reveal>
@@ -76,7 +76,7 @@ export function Placements() {
               <span className="eyebrow">Recruiters</span>
               <h3 className="font-display mt-2 text-xl font-bold text-ink sm:text-2xl">Companies that hire from IET</h3>
             </div>
-            <p className="text-[13px] text-slate-500 sm:text-sm">As named in the IET-DAVV Institute Profile</p>
+            <p className="text-[15px] text-slate-500 sm:text-sm">As named in the IET-DAVV Institute Profile</p>
           </div>
         </Reveal>
         <RecruiterWall className="mt-6 sm:mt-8" />

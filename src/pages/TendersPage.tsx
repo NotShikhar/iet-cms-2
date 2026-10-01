@@ -31,7 +31,7 @@ export default function TendersPage() {
               {FILTERS.map((f) => (
                 <button key={f} onClick={() => setFilter(f)} className={`rounded-full px-3.5 py-1.5 text-xs font-semibold transition ${filter === f ? 'bg-navy-600 text-white shadow-soft' : 'border border-line bg-white text-slate-600 hover:border-navy-200'}`}>
                   {f}
-                  {f === 'Open' && openCount > 0 && <span className="ml-1.5 rounded-full bg-emerald-500 px-1.5 text-[10px] text-white">{openCount}</span>}
+                  {f === 'Open' && openCount > 0 && <span className="ml-1.5 rounded-full bg-emerald-500 px-1.5 text-[12px] text-white">{openCount}</span>}
                 </button>
               ))}
             </div>
